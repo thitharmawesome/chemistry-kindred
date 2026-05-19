@@ -73,8 +73,8 @@
     --input: oklch(0.18 0.005 60 / 0.18);
     --ring: oklch(0.18 0.005 60 / 0.4);
 
-    --font-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
-    --font-body: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "DM Serif Display", ui-serif, Georgia, "Times New Roman", serif;
+    --font-body: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
     --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
   }
 
