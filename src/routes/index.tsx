@@ -419,9 +419,10 @@ function Application() {
                   </button>
                   <button
                     onClick={next}
-                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors"
+                    disabled={submitting}
+                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {step === total - 1 ? "Submit application" : "Continue"}
+                    {step === total - 1 ? (submitting ? "Submitting…" : "Submit application") : "Continue"}
                     <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                   </button>
                 </div>
