@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Sway — Designed for people tired of modern dating" },
       {
         property: "og:description",
-        content: "An invitation-only waitlist for singles who want chemistry over swipes.",
+        content: "Apply for a curated real-world experience. Matched by people who actually read your application.",
       },
     ],
     links: [
