@@ -496,7 +496,7 @@ function UploadField({
   onChange,
   label,
 }: {
-  field: Extract<Field, { type: "upload" }>;
+  field: Field;
   upload: UploadValue | null;
   onChange: (v: FieldValue) => void;
   label: React.ReactNode;
