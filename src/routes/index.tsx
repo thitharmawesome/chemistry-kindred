@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Sway — Designed for people tired of modern dating" },
       {
         property: "og:description",
-        content: "An invitation-only waitlist for singles who want chemistry over swipes.",
+        content: "Apply for a curated real-world experience. Matched by people who actually read your application.",
       },
     ],
     links: [
@@ -92,7 +92,7 @@ function Nav() {
           href="#apply"
           className="text-[12px] uppercase tracking-[0.18em] px-4 py-2.5 bg-ink text-paper rounded-full hover:opacity-90 transition-opacity"
         >
-          Join waitlist
+          Apply for the next event
         </a>
       </div>
     </header>
@@ -121,7 +121,7 @@ function Hero() {
               href="#apply"
               className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors"
             >
-              Join the waitlist
+              Apply for the next event
               <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
             </a>
           </div>
@@ -134,9 +134,9 @@ function Hero() {
 
 function HowItWorks() {
   const steps = [
-    ["Apply", "A real application — not a profile. Read by a human within ten days."],
-    ["Match", "Our team plus AI-guided compatibility find people you'd actually choose."],
-    ["Meet", "A dinner. A salon. A long walk. Always in person. Never a chat thread."],
+    ["Apply", "Submit your application — not a profile. Read by a real person within ten days."],
+    ["Meet us", "We'll reach out to learn more about who you are and what you're looking for."],
+    ["Get invited", "A curated experience with people chosen for you — based on who's there and what we know about you."],
   ];
   return (
     <section id="how" className="border-b hairline py-28 md:py-36">
@@ -407,8 +407,8 @@ function Submitted({ name }: { name: string }) {
         Thank you{name ? `, ${name.split(" ")[0]}` : ""}. <em className="italic">We read every word.</em>
       </h3>
       <p className="text-ink-soft mt-8 max-w-[55ch] mx-auto text-lg leading-[1.55] font-light">
-        You'll hear from a real person within ten days. If your cohort matches, we'll invite you
-        to a first room — a dinner, a salon, or a long walk. Until then: stay off the apps.
+        You'll hear from a real person within ten days. If it feels right, we'll meet to learn more —
+        then invite you to a curated experience with people chosen for you.
       </p>
       <div className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-stone">
         — Sway
