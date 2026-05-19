@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { listApplications, claimFirstAdmin } from "@/lib/waitlist.functions";
+import { listApplications, claimFirstAdmin, getUploadSignedUrl } from "@/lib/waitlist.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
@@ -19,6 +19,8 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
+type UploadValue = { path: string; name: string; type: string; size: number };
+
 type Application = {
   id: string;
   created_at: string;
@@ -32,6 +34,10 @@ type Application = {
   status: string;
   payload: Record<string, unknown>;
 };
+
+function isUploadValue(v: unknown): v is UploadValue {
+  return !!v && typeof v === "object" && "path" in (v as Record<string, unknown>) && "name" in (v as Record<string, unknown>);
+}
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -78,6 +84,51 @@ function AdminPage() {
     navigate({ to: "/login" });
   };
 
+  const downloadCsv = () => {
+    const apps = (query.data?.applications ?? []) as Application[];
+    if (apps.length === 0) {
+      toast.error("Nothing to export.");
+      return;
+    }
+    // Collect all payload keys across apps
+    const baseCols = ["id", "created_at", "name", "email", "age", "city", "pronouns", "instagram", "linkedin", "status"];
+    const payloadKeys = new Set<string>();
+    apps.forEach((a) => {
+      Object.keys(a.payload || {}).forEach((k) => {
+        if (!baseCols.includes(k)) payloadKeys.add(k);
+      });
+    });
+    const cols = [...baseCols, ...Array.from(payloadKeys).sort()];
+
+    const escape = (val: unknown) => {
+      if (val === null || val === undefined) return "";
+      let s: string;
+      if (Array.isArray(val)) s = val.join("; ");
+      else if (isUploadValue(val)) s = val.name + " (" + val.path + ")";
+      else if (typeof val === "object") s = JSON.stringify(val);
+      else s = String(val);
+      return `"${s.replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    };
+
+    const header = cols.join(",");
+    const rows = apps.map((a) =>
+      cols
+        .map((c) => {
+          if (c in a && !(c in (a.payload || {}))) return escape((a as unknown as Record<string, unknown>)[c]);
+          return escape((a.payload || {})[c]);
+        })
+        .join(","),
+    );
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `waitlist-applications-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (!sessionChecked) return null;
 
   return (
@@ -93,18 +144,28 @@ function AdminPage() {
       </header>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-12 md:py-16">
-        <div className="flex items-end justify-between mb-10">
+        <div className="flex items-end justify-between mb-10 gap-6">
           <div>
             <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-3">The inbox</div>
             <h1 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em]">
               Waitlist <em className="italic">applications</em>.
             </h1>
           </div>
-          {query.data && (
-            <div className="font-mono text-[12px] text-stone uppercase tracking-[0.2em]">
-              {query.data.applications.length} total
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            {query.data && (
+              <div className="font-mono text-[12px] text-stone uppercase tracking-[0.2em]">
+                {query.data.applications.length} total
+              </div>
+            )}
+            {query.data && query.data.applications.length > 0 && (
+              <button
+                onClick={downloadCsv}
+                className="bg-ink text-paper px-5 py-2.5 rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors"
+              >
+                Download CSV
+              </button>
+            )}
+          </div>
         </div>
 
         {query.isLoading && <p className="text-stone">Loading…</p>}
@@ -206,9 +267,17 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
             </div>
           </div>
 
-          <div className="border-t hairline pt-8 space-y-6">
+          <div className="border-t hairline pt-8 space-y-8">
             {Object.entries(app.payload || {}).map(([k, v]) => {
               if (["name", "email", "age", "city", "pronouns", "instagram", "linkedin"].includes(k)) return null;
+              if (isUploadValue(v)) {
+                return (
+                  <div key={k}>
+                    <div className="text-[10px] uppercase tracking-[0.22em] text-stone mb-2">{k}</div>
+                    <MediaPreview upload={v} />
+                  </div>
+                );
+              }
               const display = Array.isArray(v) ? v.join(", ") : typeof v === "string" ? v : JSON.stringify(v);
               if (!display) return null;
               return (
@@ -221,6 +290,56 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
           </div>
         </div>
       </aside>
+    </div>
+  );
+}
+
+function MediaPreview({ upload }: { upload: UploadValue }) {
+  const sign = useServerFn(getUploadSignedUrl);
+  const [url, setUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    sign({ data: { path: upload.path } })
+      .then((r) => {
+        if (!cancelled) setUrl(r.url);
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setError(e.message);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [upload.path, sign]);
+
+  if (error) return <div className="text-destructive text-sm">{error}</div>;
+  if (!url) return <div className="text-stone text-sm">Loading {upload.name}…</div>;
+
+  const kind = upload.type.startsWith("image/")
+    ? "image"
+    : upload.type.startsWith("video/")
+    ? "video"
+    : upload.type.startsWith("audio/")
+    ? "audio"
+    : "file";
+
+  return (
+    <div className="space-y-2">
+      {kind === "image" && (
+        <img src={url} alt={upload.name} className="max-w-full rounded-md border hairline" />
+      )}
+      {kind === "video" && (
+        <video src={url} controls className="max-w-full rounded-md border hairline" />
+      )}
+      {kind === "audio" && <audio src={url} controls className="w-full" />}
+      <div className="flex items-center gap-3 text-xs text-stone">
+        <a href={url} download={upload.name} className="underline hover:text-ink">
+          Download {upload.name}
+        </a>
+        <span>·</span>
+        <span>{(upload.size / 1024).toFixed(1)} KB</span>
+      </div>
     </div>
   );
 }
