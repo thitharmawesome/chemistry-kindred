@@ -72,6 +72,7 @@
     --border: oklch(0.18 0.005 60 / 0.12);
     --input: oklch(0.18 0.005 60 / 0.18);
     --ring: oklch(0.18 0.005 60 / 0.4);
+    --accent-whimsy: oklch(0.52 0.13 30);
 
     --font-display: "DM Serif Display", ui-serif, Georgia, "Times New Roman", serif;
     --font-body: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
@@ -93,6 +94,11 @@
   ::selection {
     background: var(--ink);
     color: var(--paper);
+  }
+
+  em, i {
+    color: var(--accent-whimsy);
+    font-style: italic;
   }
 }
 
