@@ -154,7 +154,7 @@ function Manifesto() {
 function HowItWorks() {
   const steps = [
     ["Apply", "Submit your application — not a profile. Read by a real person within ten days."],
-    ["Meet us", "We'll reach out to learn more about who you are and what you're looking for."],
+    ["Meet us", "If you're selected, we'll reach out to learn more about who you are and what you're looking for."],
     ["Get invited", "Receive an invitation to a night out with friends with the opportunity to meet a match based on who's attending and what we've learned about you."],
   ];
   return (
