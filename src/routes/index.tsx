@@ -114,9 +114,7 @@ function Hero() {
 
         <div className="mt-16 grid md:grid-cols-12 gap-10 items-end">
           <p className="md:col-span-6 md:col-start-1 text-lg md:text-xl text-ink-soft leading-[1.55] max-w-[52ch] font-light">
-            Curated real-world experiences where intentional singles meet naturally — through
-            chemistry, conversation, and AI-guided compatibility. No swipes. No performance.
-            No infinite scroll.
+            Curated real-world social experiences for singles seeking meaningful relationships, powered by AI and human intelligence.
           </p>
           <div className="md:col-span-4 md:col-start-9 flex md:justify-end gap-3">
             <a
