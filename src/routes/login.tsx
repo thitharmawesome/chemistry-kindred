@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
-    meta: [{ title: "Admin — Quiet Room" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Admin — Sway" }, { name: "robots", content: "noindex" }],
     links: [
       {
         rel: "stylesheet",
@@ -52,7 +52,7 @@ function LoginPage() {
     <main className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <Link to="/" className="font-display text-3xl tracking-tight inline-block mb-10">
-          Quiet Room
+          Sway
         </Link>
         <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-4">Admin access</div>
         <h1 className="font-display text-5xl leading-[1] tracking-[-0.02em] mb-10">

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [{ title: "Applications — Quiet Room" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Applications — Sway" }, { name: "robots", content: "noindex" }],
     links: [
       {
         rel: "stylesheet",
@@ -135,7 +135,7 @@ function AdminPage() {
     <main className="min-h-screen bg-background text-foreground">
       <header className="border-b hairline">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
-          <Link to="/" className="font-display text-xl tracking-tight">Quiet Room</Link>
+          <Link to="/" className="font-display text-xl tracking-tight">Sway</Link>
           <div className="flex items-center gap-6 text-[12px] uppercase tracking-[0.18em] text-stone">
             <span className="hidden md:inline">Applications</span>
             <button onClick={onSignOut} className="hover:text-ink transition-colors">Sign out</button>
