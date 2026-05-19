@@ -287,7 +287,7 @@ function Application() {
     }
   }, [step]);
 
-  const set = (k: string, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: string, v: FieldValue) => setForm((f) => ({ ...f, [k]: v }));
 
   const submitForm = async () => {
     const name = String(form.name ?? "").trim();
