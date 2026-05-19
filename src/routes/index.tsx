@@ -268,6 +268,8 @@ function Application() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = useServerFn(submitApplication);
 
   const total = sections.length;
   const current = sections[step];
@@ -281,8 +283,50 @@ function Application() {
   }, [step]);
 
   const set = (k: string, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
-  const next = () => (step < total - 1 ? setStep(step + 1) : setSubmitted(true));
+
+  const submitForm = async () => {
+    const name = String(form.name ?? "").trim();
+    const email = String(form.email ?? "").trim();
+    if (!name || !email) {
+      toast.error("Name and email are required.");
+      setStep(0);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const ageRaw = String(form.age ?? "").trim();
+      const ageNum = ageRaw ? Number(ageRaw) : null;
+      const result = await submit({
+        data: {
+          name,
+          email,
+          age: ageNum && Number.isFinite(ageNum) ? ageNum : null,
+          city: (form.city as string) || null,
+          pronouns: (form.pronouns as string) || null,
+          instagram: (form.instagram as string) || null,
+          linkedin: (form.linkedin as string) || null,
+          payload: form as Record<string, unknown>,
+        },
+      });
+      if (result?.ok) {
+        setSubmitted(true);
+      } else {
+        toast.error(result?.error || "Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const next = () => {
+    if (step < total - 1) setStep(step + 1);
+    else void submitForm();
+  };
   const back = () => step > 0 && setStep(step - 1);
+
 
   return (
     <section id="apply" className="py-28 md:py-36 border-b hairline">
