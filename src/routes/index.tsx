@@ -44,9 +44,9 @@ type FormState = Record<string, FieldValue>;
 const sections = [
   {
     id: "basics",
-    eyebrow: "Section 01",
-    title: "The simple facts.",
-    blurb: "Just the outline. We'll get to the interesting parts shortly.",
+    eyebrow: "The application",
+    title: "A few questions.",
+    blurb: "Just the outline. A real person reads every answer.",
     fields: [
       { key: "name", label: "Full name", type: "text", required: true, placeholder: "Eleanor Vance" },
       { key: "age", label: "Age", type: "number", required: true, placeholder: "29" },
@@ -60,49 +60,8 @@ const sections = [
       { key: "linkedin", label: "LinkedIn (optional)", type: "text", placeholder: "linkedin.com/in/…" },
     ],
   },
-  {
-    id: "personality",
-    eyebrow: "Section 02",
-    title: "Personality & lifestyle.",
-    blurb: "Write the way you talk. Specifics are far more attractive than polish.",
-    fields: [
-      { key: "weekend", label: "What does a great weekend look like to you?", type: "textarea" },
-      { key: "care", label: "What's something you care deeply about?", type: "textarea" },
-      { key: "looking", label: "What type of relationship are you looking for?", type: "chips", options: ["Long-term, marriage-minded", "Long-term, see where it goes", "Partnership, no labels", "Open to surprise"] },
-      { key: "comm", label: "Your communication style in relationships", type: "textarea" },
-      { key: "energy", label: "What kind of energy are you drawn to?", type: "textarea" },
-      { key: "attractive", label: "What makes someone instantly attractive to you?", type: "textarea" },
-      { key: "green", label: "A green flag people underestimate", type: "textarea" },
-      { key: "social", label: "Your ideal social life as a couple", type: "textarea" },
-    ],
-  },
-  {
-    id: "chemistry",
-    eyebrow: "Section 03",
-    title: "Chemistry signals.",
-    blurb: "These shape your chemistry archetype. There are no wrong answers — only honest ones.",
-    fields: [
-      { key: "crushes", label: "Top 3 celebrity crushes — and why", type: "textarea", placeholder: "1. …\n2. …\n3. …" },
-      { key: "controversial", label: "Your most controversial (harmless) opinion", type: "textarea" },
-      { key: "thrive", label: "A social setting where you thrive", type: "textarea" },
-      { key: "first", label: "Describe your ideal first interaction with someone", type: "textarea" },
-      { key: "voice", label: "Voice note (optional)", type: "upload", accept: "audio/*" },
-      { key: "video", label: "Short intro video (optional)", type: "upload", accept: "video/*" },
-    ],
-  },
-  {
-    id: "intent",
-    eyebrow: "Section 04",
-    title: "Intentionality.",
-    blurb: "We read every answer. This is the filter.",
-    fields: [
-      { key: "why", label: "Why are you joining this?", type: "textarea" },
-      { key: "different", label: "What are you hoping is different here?", type: "textarea" },
-      { key: "outside", label: "Open to meeting people outside your \"usual type\"?", type: "chips", options: ["Yes, that's the point", "Yes, with limits", "I have a type and I know it"] },
-      { key: "meaningful", label: "Are you genuinely looking for a meaningful relationship?", type: "chips", options: ["Yes, fully", "Yes, but unhurried", "Curious, not certain"] },
-    ],
-  },
 ] as const;
+
 
 /* ------------------------------ ui ------------------------------ */
 
