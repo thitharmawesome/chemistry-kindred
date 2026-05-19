@@ -140,10 +140,7 @@ function Manifesto() {
           Not a traditional singles event.
         </p>
         <p className="mt-10 text-ink-soft text-lg md:text-xl leading-[1.55] font-light max-w-[52ch]">
-          Curated to feel more like <em className="italic">a great night out</em> — not a traditional singles event.
-        </p>
-        <p className="mt-4 text-ink-soft text-lg md:text-xl leading-[1.55] font-light max-w-[52ch]">
-          Selected guests are encouraged to invite friends, helping create a more natural social atmosphere.
+          This experience is curated to feel more like a great night out. Selected guests are encouraged to invite friends, helping create a more natural social atmosphere.
         </p>
       </div>
     </section>
