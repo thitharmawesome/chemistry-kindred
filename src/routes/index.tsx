@@ -112,7 +112,7 @@ function Hero() {
 
         <div className="mt-16 grid md:grid-cols-12 gap-10 items-end">
           <div className="md:col-span-6 md:col-start-1 text-lg md:text-xl text-ink-soft leading-[1.55] max-w-[52ch] font-light space-y-4">
-            <p>Curated to feel more like a great night out than modern dating. No swiping. No endless messaging. No trying to turn strangers into chemistry through a screen.</p>
+            <p>No swiping. No endless messaging. No trying to turn strangers into chemistry through a screen.</p>
             <p>Just real people, and the chance to meet in real life.</p>
           </div>
           <div className="md:col-span-4 md:col-start-9 flex md:justify-end gap-3">
@@ -140,6 +140,9 @@ function Manifesto() {
           Not a traditional singles event.
         </p>
         <p className="mt-10 text-ink-soft text-lg md:text-xl leading-[1.55] font-light max-w-[52ch]">
+          Curated to feel more like a great night out than modern dating.
+        </p>
+        <p className="mt-4 text-ink-soft text-lg md:text-xl leading-[1.55] font-light max-w-[52ch]">
           Selected guests are encouraged to invite friends, helping create a more natural social atmosphere.
         </p>
       </div>
