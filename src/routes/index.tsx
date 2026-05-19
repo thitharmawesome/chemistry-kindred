@@ -190,7 +190,7 @@ function Application() {
           email,
           age: ageNum && Number.isFinite(ageNum) ? ageNum : null,
           city: (form.city as string) || null,
-          pronouns: (form.pronouns as string) || null,
+          pronouns: null,
           instagram: (form.instagram as string) || null,
           linkedin: (form.linkedin as string) || null,
           payload: form as Record<string, unknown>,
