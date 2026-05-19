@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitApplication } from "@/lib/waitlist.functions";
+import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -264,6 +268,8 @@ function Application() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = useServerFn(submitApplication);
 
   const total = sections.length;
   const current = sections[step];
@@ -277,8 +283,50 @@ function Application() {
   }, [step]);
 
   const set = (k: string, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
-  const next = () => (step < total - 1 ? setStep(step + 1) : setSubmitted(true));
+
+  const submitForm = async () => {
+    const name = String(form.name ?? "").trim();
+    const email = String(form.email ?? "").trim();
+    if (!name || !email) {
+      toast.error("Name and email are required.");
+      setStep(0);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const ageRaw = String(form.age ?? "").trim();
+      const ageNum = ageRaw ? Number(ageRaw) : null;
+      const result = await submit({
+        data: {
+          name,
+          email,
+          age: ageNum && Number.isFinite(ageNum) ? ageNum : null,
+          city: (form.city as string) || null,
+          pronouns: (form.pronouns as string) || null,
+          instagram: (form.instagram as string) || null,
+          linkedin: (form.linkedin as string) || null,
+          payload: form as Record<string, unknown>,
+        },
+      });
+      if (result?.ok) {
+        setSubmitted(true);
+      } else {
+        toast.error(result?.error || "Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const next = () => {
+    if (step < total - 1) setStep(step + 1);
+    else void submitForm();
+  };
   const back = () => step > 0 && setStep(step - 1);
+
 
   return (
     <section id="apply" className="py-28 md:py-36 border-b hairline">
@@ -371,9 +419,10 @@ function Application() {
                   </button>
                   <button
                     onClick={next}
-                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors"
+                    disabled={submitting}
+                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {step === total - 1 ? "Submit application" : "Continue"}
+                    {step === total - 1 ? (submitting ? "Submitting…" : "Submit application") : "Continue"}
                     <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                   </button>
                 </div>
