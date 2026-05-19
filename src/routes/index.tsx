@@ -10,13 +10,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Quiet Room — Designed for people tired of modern dating" },
+      { title: "Sway — Designed for people tired of modern dating" },
       {
         name: "description",
         content:
           "Curated real-world experiences where intentional singles meet naturally through chemistry, conversation, and AI-guided compatibility.",
       },
-      { property: "og:title", content: "Quiet Room — Designed for people tired of modern dating" },
+      { property: "og:title", content: "Sway — Designed for people tired of modern dating" },
       {
         property: "og:description",
         content: "An invitation-only waitlist for singles who want chemistry over swipes.",
@@ -82,7 +82,7 @@ function Nav() {
     <header className="fixed top-0 inset-x-0 z-50 bg-background/80 backdrop-blur-md border-b hairline">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         <a href="#top" className="font-display text-[1.6rem] leading-none tracking-tight">
-          Quiet Room
+          Sway
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground tracking-wide">
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
@@ -411,7 +411,7 @@ function Submitted({ name }: { name: string }) {
         to a first room — a dinner, a salon, or a long walk. Until then: stay off the apps.
       </p>
       <div className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-stone">
-        — The Quiet Room
+        — Sway
       </div>
     </div>
   );
@@ -422,10 +422,10 @@ function Footer() {
     <footer className="py-16">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="font-display text-[clamp(3rem,12vw,9rem)] leading-[0.9] tracking-[-0.025em]">
-          Quiet Room<span className="italic">.</span>
+          Sway<span className="italic">.</span>
         </div>
         <div className="mt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[12px] uppercase tracking-[0.2em] text-stone font-mono">
-          <a href="mailto:hello@quietroom.co" className="hover:text-ink transition-colors">hello@quietroom.co</a>
+          <a href="mailto:hello@sway.co" className="hover:text-ink transition-colors">hello@sway.co</a>
           <div className="flex gap-8">
             <a href="#" className="hover:text-ink transition-colors">Instagram</a>
             <a href="#" className="hover:text-ink transition-colors">Privacy</a>
