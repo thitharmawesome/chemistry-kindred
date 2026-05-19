@@ -62,6 +62,28 @@ export const listApplications = createServerFn({ method: "GET" })
     return { applications: data ?? [] };
   });
 
+export const getUploadSignedUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({ path: z.string().min(1).max(500) }).parse(input),
+  )
+  .handler(async ({ context, data }) => {
+    const { userId } = context;
+    const { data: roleRow } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!roleRow) throw new Error("Forbidden: admin access required.");
+
+    const { data: signed, error } = await supabaseAdmin.storage
+      .from("waitlist-uploads")
+      .createSignedUrl(data.path, 60 * 60);
+    if (error || !signed) throw new Error("Could not sign URL.");
+    return { url: signed.signedUrl };
+  });
+
 export const claimFirstAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -87,3 +109,4 @@ export const claimFirstAdmin = createServerFn({ method: "POST" })
     }
     return { ok: true as const };
   });
+
