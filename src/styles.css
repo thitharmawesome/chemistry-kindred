@@ -30,6 +30,11 @@
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-stone: var(--stone);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-coral: var(--coral);
+  --color-teal: var(--teal);
+  --color-plum: var(--plum);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
   --font-mono: var(--font-mono);
@@ -37,45 +42,52 @@
 
 @layer base {
   :root {
-    --radius: 0.125rem;
+    --radius: 1rem;
 
-    /* Paper & Ink — warm off-white, rich black */
-    --paper: oklch(0.975 0.005 85);       /* #f5f3ee */
-    --paper-2: oklch(0.945 0.006 85);     /* #e8e4dd */
-    --ink: oklch(0.18 0.005 60);          /* near black, warm */
-    --ink-soft: oklch(0.30 0.005 60);
-    --stone: oklch(0.55 0.005 70);
+    /* Dark & Amber — warm near-black with vivid amber + colorful accents */
+    --paper: oklch(0.96 0.012 80);        /* warm cream */
+    --paper-2: oklch(0.92 0.015 80);
+    --ink: oklch(0.14 0.012 50);          /* deep warm near-black */
+    --ink-2: oklch(0.18 0.015 50);
+    --ink-soft: oklch(0.72 0.012 80);     /* light text on dark */
+    --stone: oklch(0.58 0.012 80);
 
-    --background: var(--paper);
-    --foreground: var(--ink);
+    --amber: oklch(0.78 0.17 70);         /* vivid amber */
+    --amber-soft: oklch(0.86 0.13 75);
+    --coral: oklch(0.72 0.18 30);         /* warm coral */
+    --teal: oklch(0.72 0.13 195);         /* cool teal */
+    --plum: oklch(0.55 0.16 320);         /* magenta plum */
 
-    --card: oklch(1 0 0);
-    --card-foreground: var(--ink);
-    --popover: oklch(1 0 0);
-    --popover-foreground: var(--ink);
+    --background: var(--ink);
+    --foreground: var(--paper);
 
-    --primary: var(--ink);
-    --primary-foreground: var(--paper);
+    --card: var(--ink-2);
+    --card-foreground: var(--paper);
+    --popover: var(--ink-2);
+    --popover-foreground: var(--paper);
 
-    --secondary: var(--paper-2);
-    --secondary-foreground: var(--ink);
+    --primary: var(--amber);
+    --primary-foreground: var(--ink);
 
-    --muted: var(--paper-2);
+    --secondary: var(--ink-2);
+    --secondary-foreground: var(--paper);
+
+    --muted: var(--ink-2);
     --muted-foreground: var(--stone);
 
-    --accent: var(--ink);
-    --accent-foreground: var(--paper);
+    --accent: var(--amber);
+    --accent-foreground: var(--ink);
 
-    --destructive: oklch(0.55 0.18 25);
+    --destructive: oklch(0.62 0.22 25);
     --destructive-foreground: var(--paper);
 
-    --border: oklch(0.18 0.005 60 / 0.12);
-    --input: oklch(0.18 0.005 60 / 0.18);
-    --ring: oklch(0.18 0.005 60 / 0.4);
+    --border: oklch(0.96 0.012 80 / 0.12);
+    --input: oklch(0.96 0.012 80 / 0.18);
+    --ring: var(--amber);
 
-    --font-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
-    --font-body: "Work Sans", ui-sans-serif, system-ui, sans-serif;
-    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+    --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
   }
 
   * {
@@ -86,37 +98,71 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
-    font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--amber);
+    color: var(--ink);
   }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
+  .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
   .font-body { font-family: var(--font-body); }
   .font-mono { font-family: var(--font-mono); }
 
-  .hairline { border-color: oklch(0.18 0.005 60 / 0.14); }
+  .hairline { border-color: oklch(0.96 0.012 80 / 0.12); }
+
+  .bento {
+    background: var(--ink-2);
+    border: 1px solid oklch(0.96 0.012 80 / 0.08);
+    border-radius: 1.5rem;
+    transition: transform 300ms ease, border-color 300ms ease;
+  }
+  .bento:hover {
+    border-color: oklch(0.96 0.012 80 / 0.22);
+  }
+
+  .bento-amber {
+    background: linear-gradient(135deg, var(--amber) 0%, var(--amber-soft) 100%);
+    color: var(--ink);
+    border-radius: 1.5rem;
+  }
+  .bento-coral {
+    background: linear-gradient(135deg, var(--coral) 0%, oklch(0.80 0.14 40) 100%);
+    color: var(--ink);
+    border-radius: 1.5rem;
+  }
+  .bento-teal {
+    background: linear-gradient(135deg, var(--teal) 0%, oklch(0.82 0.10 200) 100%);
+    color: var(--ink);
+    border-radius: 1.5rem;
+  }
+  .bento-plum {
+    background: linear-gradient(135deg, var(--plum) 0%, oklch(0.65 0.18 310) 100%);
+    color: var(--paper);
+    border-radius: 1.5rem;
+  }
 
   .input-field {
     width: 100%;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid oklch(0.18 0.005 60 / 0.18);
-    padding: 0.85rem 0;
-    color: var(--ink);
+    background: oklch(0.96 0.012 80 / 0.04);
+    border: 1px solid oklch(0.96 0.012 80 / 0.12);
+    border-radius: 0.75rem;
+    padding: 0.95rem 1.1rem;
+    color: var(--paper);
     font-family: var(--font-body);
-    font-size: 1.05rem;
+    font-size: 1rem;
     outline: none;
-    transition: border-color 200ms ease;
+    transition: all 200ms ease;
   }
-  .input-field::placeholder { color: oklch(0.18 0.005 60 / 0.32); }
-  .input-field:focus { border-bottom-color: var(--ink); }
+  .input-field::placeholder { color: oklch(0.96 0.012 80 / 0.35); }
+  .input-field:focus {
+    border-color: var(--amber);
+    background: oklch(0.96 0.012 80 / 0.06);
+    box-shadow: 0 0 0 4px oklch(0.78 0.17 70 / 0.12);
+  }
 
   textarea.input-field {
     resize: none;
@@ -127,27 +173,31 @@
   .chip {
     display: inline-flex;
     align-items: center;
-    padding: 0.5rem 0.95rem;
-    border: 1px solid oklch(0.18 0.005 60 / 0.2);
+    padding: 0.55rem 1rem;
+    border: 1px solid oklch(0.96 0.012 80 / 0.18);
     border-radius: 999px;
     font-size: 0.85rem;
-    color: var(--ink);
+    color: var(--paper);
     cursor: pointer;
     transition: all 180ms ease;
     background: transparent;
     font-family: var(--font-body);
-    letter-spacing: 0.01em;
+    font-weight: 500;
   }
-  .chip:hover { border-color: var(--ink); }
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
   .chip[data-active="true"] {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    background: var(--amber);
+    color: var(--ink);
+    border-color: var(--amber);
   }
 
   .rule {
     height: 1px;
-    background: oklch(0.18 0.005 60 / 0.14);
+    background: oklch(0.96 0.012 80 / 0.12);
     width: 100%;
+  }
+
+  .glow-amber {
+    box-shadow: 0 20px 60px -20px oklch(0.78 0.17 70 / 0.45);
   }
 }
