@@ -139,7 +139,7 @@ function Manifesto() {
   return (
     <section className="border-b hairline py-28 md:py-36">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-        <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">Not a traditional singles event</div>
+        <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">Our approach</div>
         <p className="font-display text-3xl md:text-5xl leading-[1.15] tracking-[-0.02em] max-w-[26ch] text-ink">
           Not a traditional singles event.
         </p>
