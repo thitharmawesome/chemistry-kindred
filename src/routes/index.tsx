@@ -293,104 +293,37 @@ function Application() {
 
 
   return (
-    <section id="apply" className="py-28 md:py-36 border-b hairline">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-12">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">The application</div>
-            <h2 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] max-w-[16ch]">
-              Tell us who you <em className="italic">actually</em> are.
-            </h2>
-          </div>
-          {!submitted && (
-            <div className="hidden md:block text-right text-[11px] tracking-[0.2em] text-stone font-mono uppercase">
-              {String(step + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </div>
-          )}
+    <section id="apply" className="py-28 md:py-36 border-b hairline scroll-mt-20">
+      <div className="max-w-[820px] mx-auto px-6 md:px-12">
+        <div className="mb-14">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">The application</div>
+          <h2 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] max-w-[16ch]">
+            Tell us who you <em className="italic">actually</em> are.
+          </h2>
+          <p className="text-ink-soft mt-6 max-w-[55ch] font-light text-base md:text-lg leading-[1.55]">
+            {current.blurb}
+          </p>
         </div>
-
-        {!submitted && (
-          <div className="h-px w-full bg-foreground/10 mb-16 overflow-hidden">
-            <div
-              className="h-full bg-ink transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
 
         {submitted ? (
           <Submitted name={(form.name as string) || ""} />
         ) : (
-          <div className="grid md:grid-cols-12 gap-12 md:gap-16">
-            <aside className="md:col-span-4">
-              <ol className="space-y-6 md:sticky md:top-28">
-                {sections.map((s, i) => {
-                  const state = i < step ? "done" : i === step ? "active" : "todo";
-                  return (
-                    <li key={s.id} className="flex items-start gap-4">
-                      <span
-                        className={`mt-1.5 inline-flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-mono ${
-                          state === "active"
-                            ? "bg-ink text-paper"
-                            : state === "done"
-                            ? "border border-ink text-ink"
-                            : "border hairline text-stone"
-                        }`}
-                      >
-                        {i + 1}
-                      </span>
-                      <div>
-                        <div
-                          className={`font-display text-xl leading-tight ${
-                            state === "todo" ? "text-stone" : "text-ink"
-                          }`}
-                        >
-                          {s.title}
-                        </div>
-                        <div className="text-[10px] uppercase tracking-[0.22em] text-stone mt-1">
-                          {s.eyebrow}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </aside>
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <div className="space-y-10">
+              {current.fields.map((f) => (
+                <Field key={f.key} field={f} value={form[f.key]} onChange={(v) => set(f.key, v)} />
+              ))}
+            </div>
 
-            <div className="md:col-span-8">
-              <div key={current.id} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-3">{current.eyebrow}</div>
-                <h3 className="font-display text-4xl md:text-5xl leading-[1.05] tracking-[-0.015em] mb-4">
-                  {current.title}
-                </h3>
-                <p className="text-ink-soft mb-12 max-w-[55ch] font-light text-base md:text-lg leading-[1.55]">
-                  {current.blurb}
-                </p>
-
-                <div className="space-y-10">
-                  {current.fields.map((f) => (
-                    <Field key={f.key} field={f} value={form[f.key]} onChange={(v) => set(f.key, v)} />
-                  ))}
-                </div>
-
-                <div className="mt-16 flex items-center justify-between">
-                  <button
-                    onClick={back}
-                    disabled={step === 0}
-                    className="text-[12px] uppercase tracking-[0.2em] text-stone hover:text-ink disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    ← Back
-                  </button>
-                  <button
-                    onClick={next}
-                    disabled={submitting}
-                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {step === total - 1 ? (submitting ? "Submitting…" : "Submit application") : "Continue"}
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </button>
-                </div>
-              </div>
+            <div className="mt-16 flex items-center justify-end">
+              <button
+                onClick={() => void submitForm()}
+                disabled={submitting}
+                className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {submitting ? "Submitting…" : "Submit application"}
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+              </button>
             </div>
           </div>
         )}
@@ -398,6 +331,7 @@ function Application() {
     </section>
   );
 }
+
 
 type Field = {
   key: string;
