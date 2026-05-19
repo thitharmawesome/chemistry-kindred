@@ -108,7 +108,7 @@ function Hero() {
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="flex items-center gap-3 mb-12 text-[11px] uppercase tracking-[0.28em] text-stone">
           <span className="h-px w-10 bg-foreground/30" />
-          <span>Invitation only</span>
+          <span>Carefully Curated</span>
         </div>
 
         <h1 className="font-display font-normal text-[clamp(3.25rem,10vw,9.5rem)] leading-[0.95] tracking-[-0.025em] max-w-[15ch]">
