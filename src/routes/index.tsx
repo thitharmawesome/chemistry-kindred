@@ -449,7 +449,7 @@ function Field({
       <div>
         {label}
         <div className="flex flex-wrap gap-2 mt-1">
-          {field.options.map((o) => {
+          {(field.options ?? []).map((o) => {
             const active = arr.includes(o);
             return (
               <button
