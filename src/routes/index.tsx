@@ -121,7 +121,7 @@ function Hero() {
               href="#apply"
               className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors"
             >
-              Join the waitlist
+              Apply for the next event
               <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
             </a>
           </div>
