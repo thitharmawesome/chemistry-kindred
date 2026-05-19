@@ -72,6 +72,7 @@ function Landing() {
     <main className="min-h-screen bg-background text-foreground antialiased">
       <Nav />
       <Hero />
+      <Manifesto />
       <HowItWorks />
       <Application />
       <Footer />
