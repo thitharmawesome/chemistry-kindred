@@ -155,7 +155,7 @@ function HowItWorks() {
   const steps = [
     ["Apply", "Submit your application — not a profile. Read by a real person within ten days."],
     ["Meet us", "We'll reach out to learn more about who you are and what you're looking for."],
-    ["Get invited", "Receive an invitation to a curated evening that feels like a natural night out — with a hand-selected introduction, based on who's attending and what we've learned about you."],
+    ["Get invited", "Receive an invitation to a night out with friends with the opportunity to meet a match based on who's attending and what we've learned about you."],
   ];
   return (
     <section id="how" className="border-b hairline py-28 md:py-36">
