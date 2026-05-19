@@ -405,6 +405,88 @@ function UploadField({
   );
 }
 
+function MultiUploadField({
+  field,
+  uploads,
+  onChange,
+  label,
+}: {
+  field: Field;
+  uploads: UploadValue[];
+  onChange: (v: FieldValue) => void;
+  label: React.ReactNode;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  const handleFiles = async (files: FileList) => {
+    setBusy(true);
+    try {
+      const next: UploadValue[] = [...uploads];
+      for (const file of Array.from(files)) {
+        const ext = file.name.split(".").pop() || "bin";
+        const path = `${field.key}/${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage
+          .from("waitlist-uploads")
+          .upload(path, file, { contentType: file.type, upsert: false });
+        if (error) throw error;
+        next.push({ path, name: file.name, type: file.type, size: file.size });
+      }
+      onChange(next);
+    } catch (e) {
+      console.error(e);
+      toast.error("Upload failed. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const remove = (path: string) => {
+    onChange(uploads.filter((u) => u.path !== path));
+  };
+
+  return (
+    <div>
+      {label}
+      <label className="flex items-center gap-4 border hairline border-dashed rounded-md px-5 py-5 cursor-pointer hover:border-ink transition-colors">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone">
+          {busy ? "Uploading…" : "Add photos"}
+        </span>
+        <span className="text-sm text-ink-soft truncate">
+          {uploads.length ? `${uploads.length} photo${uploads.length === 1 ? "" : "s"} added — click to add more` : "Drop photos or click to upload"}
+        </span>
+        <input
+          type="file"
+          multiple
+          accept={"accept" in field ? field.accept : undefined}
+          className="hidden"
+          disabled={busy}
+          onChange={(e) => {
+            if (e.target.files?.length) void handleFiles(e.target.files);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      {uploads.length > 0 && (
+        <ul className="mt-3 space-y-1">
+          {uploads.map((u) => (
+            <li key={u.path} className="flex items-center justify-between text-sm text-ink">
+              <span className="truncate">{u.name}</span>
+              <button
+                type="button"
+                onClick={() => remove(u.path)}
+                className="ml-3 font-mono text-[10px] uppercase tracking-[0.2em] text-stone hover:text-ink transition-colors"
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+
 
 function Submitted({ name }: { name: string }) {
   return (
