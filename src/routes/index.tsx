@@ -106,18 +106,13 @@ function Hero() {
   return (
     <section id="top" className="relative pt-36 md:pt-44 pb-24 md:pb-32 border-b hairline">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-        <div className="flex items-center gap-3 mb-12 text-[11px] uppercase tracking-[0.28em] text-stone">
-          <span className="h-px w-10 bg-foreground/30" />
-          <span>Carefully Curated</span>
-        </div>
-
         <h1 className="font-display font-normal text-[clamp(3.25rem,10vw,9.5rem)] leading-[0.95] tracking-[-0.025em] max-w-[15ch]">
           Designed for people <em className="italic">tired</em> of modern dating.
         </h1>
 
         <div className="mt-16 grid md:grid-cols-12 gap-10 items-end">
           <div className="md:col-span-6 md:col-start-1 text-lg md:text-xl text-ink-soft leading-[1.55] max-w-[52ch] font-light space-y-4">
-            <p>Crafted to feel more like a great night out than modern dating. No swiping. No endless messaging. No trying to turn strangers into chemistry through a screen.</p>
+            <p>Curated to feel more like a great night out than modern dating. No swiping. No endless messaging. No trying to turn strangers into chemistry through a screen.</p>
             <p>Just real people, and the chance to meet in real life.</p>
           </div>
           <div className="md:col-span-4 md:col-start-9 flex md:justify-end gap-3">
