@@ -399,7 +399,17 @@ function Application() {
   );
 }
 
-type Field = (typeof sections)[number]["fields"][number];
+type Field = {
+  key: string;
+  label: string;
+  type: string;
+  required?: boolean;
+  placeholder?: string;
+  options?: readonly string[];
+  multi?: boolean;
+  accept?: string;
+};
+
 
 function Field({
   field,
