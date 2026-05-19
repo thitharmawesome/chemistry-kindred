@@ -229,22 +229,12 @@ function HowItWorks() {
 /* ------------------------------ form ------------------------------ */
 
 function Application() {
-  const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const submit = useServerFn(submitApplication);
 
-  const total = sections.length;
-  const current = sections[step];
-  const progress = useMemo(() => ((step + 1) / total) * 100, [step, total]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const el = document.getElementById("apply");
-      if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: "smooth" });
-    }
-  }, [step]);
+  const current = sections[0];
 
   const set = (k: string, v: FieldValue) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -253,7 +243,6 @@ function Application() {
     const email = String(form.email ?? "").trim();
     if (!name || !email) {
       toast.error("Name and email are required.");
-      setStep(0);
       return;
     }
     setSubmitting(true);
@@ -285,11 +274,7 @@ function Application() {
     }
   };
 
-  const next = () => {
-    if (step < total - 1) setStep(step + 1);
-    else void submitForm();
-  };
-  const back = () => step > 0 && setStep(step - 1);
+
 
 
   return (
