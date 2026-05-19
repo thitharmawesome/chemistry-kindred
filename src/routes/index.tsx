@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { submitApplication } from "@/lib/waitlist.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
 
 
 export const Route = createFileRoute("/")({
@@ -34,7 +36,10 @@ export const Route = createFileRoute("/")({
 
 /* ------------------------------ data ------------------------------ */
 
-type FormState = Record<string, string | string[]>;
+type UploadValue = { path: string; name: string; type: string; size: number };
+type FieldValue = string | string[] | UploadValue | undefined;
+type FormState = Record<string, FieldValue>;
+
 
 const sections = [
   {
@@ -282,7 +287,7 @@ function Application() {
     }
   }, [step]);
 
-  const set = (k: string, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: string, v: FieldValue) => setForm((f) => ({ ...f, [k]: v }));
 
   const submitForm = async () => {
     const name = String(form.name ?? "").trim();
@@ -443,8 +448,8 @@ function Field({
   onChange,
 }: {
   field: Field;
-  value: string | string[] | undefined;
-  onChange: (v: string | string[]) => void;
+  value: FieldValue;
+  onChange: (v: FieldValue) => void;
 }) {
   const label = (
     <label className="block text-[11px] uppercase tracking-[0.22em] text-stone mb-3 font-body">
@@ -470,7 +475,7 @@ function Field({
 
   if (field.type === "chips") {
     const multi = "multi" in field && field.multi;
-    const arr = Array.isArray(value) ? value : value ? [value as string] : [];
+    const arr = Array.isArray(value) ? (value as string[]) : value ? [value as string] : [];
     return (
       <div>
         {label}
@@ -498,25 +503,8 @@ function Field({
   }
 
   if (field.type === "upload") {
-    return (
-      <div>
-        {label}
-        <label className="flex items-center gap-4 border hairline border-dashed rounded-md px-5 py-5 cursor-pointer hover:border-ink transition-colors">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone">
-            {value ? "Selected" : "Add file"}
-          </span>
-          <span className="text-sm text-ink truncate">
-            {value ? (value as string) : "Drop a file or click to upload"}
-          </span>
-          <input
-            type="file"
-            accept={"accept" in field ? field.accept : undefined}
-            className="hidden"
-            onChange={(e) => onChange(e.target.files?.[0]?.name || "")}
-          />
-        </label>
-      </div>
-    );
+    const upload = value && typeof value === "object" && "path" in value ? (value as UploadValue) : null;
+    return <UploadField field={field} upload={upload} onChange={onChange} label={label} />;
   }
 
   return (
@@ -532,6 +520,63 @@ function Field({
     </div>
   );
 }
+
+function UploadField({
+  field,
+  upload,
+  onChange,
+  label,
+}: {
+  field: Extract<Field, { type: "upload" }>;
+  upload: UploadValue | null;
+  onChange: (v: FieldValue) => void;
+  label: React.ReactNode;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  const handleFile = async (file: File) => {
+    setBusy(true);
+    try {
+      const ext = file.name.split(".").pop() || "bin";
+      const path = `${field.key}/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage
+        .from("waitlist-uploads")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (error) throw error;
+      onChange({ path, name: file.name, type: file.type, size: file.size });
+    } catch (e) {
+      console.error(e);
+      toast.error("Upload failed. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div>
+      {label}
+      <label className="flex items-center gap-4 border hairline border-dashed rounded-md px-5 py-5 cursor-pointer hover:border-ink transition-colors">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone">
+          {busy ? "Uploading…" : upload ? "Selected" : "Add file"}
+        </span>
+        <span className="text-sm text-ink truncate">
+          {upload ? upload.name : "Drop a file or click to upload"}
+        </span>
+        <input
+          type="file"
+          accept={"accept" in field ? field.accept : undefined}
+          className="hidden"
+          disabled={busy}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void handleFile(f);
+          }}
+        />
+      </label>
+    </div>
+  );
+}
+
 
 function Submitted({ name }: { name: string }) {
   return (
