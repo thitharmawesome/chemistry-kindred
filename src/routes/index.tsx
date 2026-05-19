@@ -407,8 +407,8 @@ function Submitted({ name }: { name: string }) {
         Thank you{name ? `, ${name.split(" ")[0]}` : ""}. <em className="italic">We read every word.</em>
       </h3>
       <p className="text-ink-soft mt-8 max-w-[55ch] mx-auto text-lg leading-[1.55] font-light">
-        You'll hear from a real person within ten days. If your cohort matches, we'll invite you
-        to a first room — a dinner, a salon, or a long walk. Until then: stay off the apps.
+        You'll hear from a real person within ten days. If it feels right, we'll meet to learn more —
+        then invite you to a curated experience with people chosen for you.
       </p>
       <div className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-stone">
         — Sway
