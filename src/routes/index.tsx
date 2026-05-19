@@ -275,7 +275,7 @@ function Application() {
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
               <div className="grid md:grid-cols-2 gap-6">
                 {current.fields.map((f) => (
-                  <div key={f.key} className={f.type === "chips" && f.multi ? "md:col-span-2" : ""}>
+                  <div key={f.key} className={f.type === "chips" && "multi" in f && f.multi ? "md:col-span-2" : ""}>
                     <Field field={f} value={form[f.key]} onChange={(v) => set(f.key, v)} />
                   </div>
                 ))}
