@@ -106,6 +106,7 @@ function Hero() {
   return (
     <section id="top" className="relative pt-36 md:pt-44 pb-24 md:pb-32 border-b hairline">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
+        <h1 className="font-display font-normal text-[clamp(3.25rem,10vw,9.5rem)] leading-[0.95] tracking-[-0.025em] max-w-[15ch]">
           Designed for people <em className="italic">tired</em> of modern dating.
         </h1>
 
