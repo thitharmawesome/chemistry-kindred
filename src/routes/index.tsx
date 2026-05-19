@@ -92,7 +92,7 @@ function Nav() {
           href="#apply"
           className="text-[12px] uppercase tracking-[0.18em] px-4 py-2.5 bg-ink text-paper rounded-full hover:opacity-90 transition-opacity"
         >
-          Join waitlist
+          Apply for the next event
         </a>
       </div>
     </header>
