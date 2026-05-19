@@ -158,7 +158,7 @@ function HowItWorks() {
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">How it works</div>
         <h2 className="font-display text-5xl md:text-6xl leading-[1.02] tracking-[-0.02em] max-w-[18ch]">
-          Three simple steps to a real match
+          A real introduction in three steps
         </h2>
         <div className="mt-20 grid md:grid-cols-3 gap-10 md:gap-16">
           {steps.map(([t, d], i) => (
