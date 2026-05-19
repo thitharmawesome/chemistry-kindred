@@ -70,8 +70,6 @@ function Landing() {
     <main className="min-h-screen bg-background text-foreground antialiased">
       <Nav />
       <Hero />
-      <Marquee />
-      <Principles />
       <HowItWorks />
       <Application />
       <Footer />
@@ -87,7 +85,6 @@ function Nav() {
           Quiet Room
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground tracking-wide">
-          <a href="#principles" className="hover:text-foreground transition-colors">Principles</a>
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
           <a href="#apply" className="hover:text-foreground transition-colors">Apply</a>
         </nav>
@@ -108,7 +105,7 @@ function Hero() {
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="flex items-center gap-3 mb-12 text-[11px] uppercase tracking-[0.28em] text-stone">
           <span className="h-px w-10 bg-foreground/30" />
-          <span>Invitation only · Spring cohort 2026</span>
+          <span>Invitation only</span>
         </div>
 
         <h1 className="font-display font-normal text-[clamp(3.25rem,10vw,9.5rem)] leading-[0.95] tracking-[-0.025em] max-w-[15ch]">
@@ -132,72 +129,10 @@ function Hero() {
           </div>
         </div>
       </div>
-
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 mt-24 md:mt-32">
-        <div className="rule mb-10" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-8">
-          {[
-            ["~2%", "of applicants accepted"],
-            ["4 cities", "NYC · LA · London · CDMX"],
-            ["Real rooms", "Dinners, salons, weekends"],
-            ["No app", "We do the matching"],
-          ].map(([n, l]) => (
-            <div key={l}>
-              <div className="font-display text-4xl md:text-5xl tracking-tight">{n}</div>
-              <div className="mt-3 text-[13px] text-stone">{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
 
-function Marquee() {
-  const items = ["Chemistry over swipes", "Curated rooms", "Real conversation", "Invitation only", "Quiet luxury", "Intentional only"];
-  return (
-    <section className="border-b hairline py-10 overflow-hidden">
-      <div className="flex gap-16 whitespace-nowrap animate-[scroll_40s_linear_infinite] font-display text-3xl md:text-4xl italic text-ink-soft">
-        {[...items, ...items, ...items].map((t, i) => (
-          <span key={i} className="flex items-center gap-16">
-            <span>{t}</span>
-            <span className="text-stone">✦</span>
-          </span>
-        ))}
-      </div>
-      <style>{`@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }`}</style>
-    </section>
-  );
-}
-
-function Principles() {
-  const lines = [
-    ["No swipes.", "Attraction is not a deck of cards."],
-    ["No performance.", "We do not optimize for the bio."],
-    ["No serial daters.", "The filter is the product."],
-    ["No content people.", "If you came for the story, please don't."],
-  ];
-  return (
-    <section id="principles" className="border-b hairline py-28 md:py-40">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 grid md:grid-cols-12 gap-12">
-        <div className="md:col-span-4">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">A short manifesto</div>
-          <h2 className="font-display text-5xl md:text-6xl leading-[1.02] tracking-[-0.02em]">
-            What we <em className="italic">won't</em> do.
-          </h2>
-        </div>
-        <ul className="md:col-span-8 border-t hairline">
-          {lines.map(([k, v]) => (
-            <li key={k} className="border-b hairline py-8 grid grid-cols-12 items-baseline gap-6">
-              <span className="col-span-12 md:col-span-5 font-display text-3xl md:text-4xl">{k}</span>
-              <span className="col-span-12 md:col-span-7 text-ink-soft text-base md:text-lg leading-[1.55] font-light">{v}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
 
 function HowItWorks() {
   const steps = [
