@@ -36,7 +36,10 @@ export const Route = createFileRoute("/")({
 
 /* ------------------------------ data ------------------------------ */
 
-type FormState = Record<string, string | string[]>;
+type UploadValue = { path: string; name: string; type: string; size: number };
+type FieldValue = string | string[] | UploadValue | undefined;
+type FormState = Record<string, FieldValue>;
+
 
 const sections = [
   {
