@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { submitApplication } from "@/lib/waitlist.functions";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,9 +44,9 @@ type FormState = Record<string, FieldValue>;
 const sections = [
   {
     id: "basics",
-    eyebrow: "Section 01",
-    title: "The simple facts.",
-    blurb: "Just the outline. We'll get to the interesting parts shortly.",
+    eyebrow: "The application",
+    title: "A few questions.",
+    blurb: "Just the outline. A real person reads every answer.",
     fields: [
       { key: "name", label: "Full name", type: "text", required: true, placeholder: "Eleanor Vance" },
       { key: "age", label: "Age", type: "number", required: true, placeholder: "29" },
@@ -60,49 +60,8 @@ const sections = [
       { key: "linkedin", label: "LinkedIn (optional)", type: "text", placeholder: "linkedin.com/in/…" },
     ],
   },
-  {
-    id: "personality",
-    eyebrow: "Section 02",
-    title: "Personality & lifestyle.",
-    blurb: "Write the way you talk. Specifics are far more attractive than polish.",
-    fields: [
-      { key: "weekend", label: "What does a great weekend look like to you?", type: "textarea" },
-      { key: "care", label: "What's something you care deeply about?", type: "textarea" },
-      { key: "looking", label: "What type of relationship are you looking for?", type: "chips", options: ["Long-term, marriage-minded", "Long-term, see where it goes", "Partnership, no labels", "Open to surprise"] },
-      { key: "comm", label: "Your communication style in relationships", type: "textarea" },
-      { key: "energy", label: "What kind of energy are you drawn to?", type: "textarea" },
-      { key: "attractive", label: "What makes someone instantly attractive to you?", type: "textarea" },
-      { key: "green", label: "A green flag people underestimate", type: "textarea" },
-      { key: "social", label: "Your ideal social life as a couple", type: "textarea" },
-    ],
-  },
-  {
-    id: "chemistry",
-    eyebrow: "Section 03",
-    title: "Chemistry signals.",
-    blurb: "These shape your chemistry archetype. There are no wrong answers — only honest ones.",
-    fields: [
-      { key: "crushes", label: "Top 3 celebrity crushes — and why", type: "textarea", placeholder: "1. …\n2. …\n3. …" },
-      { key: "controversial", label: "Your most controversial (harmless) opinion", type: "textarea" },
-      { key: "thrive", label: "A social setting where you thrive", type: "textarea" },
-      { key: "first", label: "Describe your ideal first interaction with someone", type: "textarea" },
-      { key: "voice", label: "Voice note (optional)", type: "upload", accept: "audio/*" },
-      { key: "video", label: "Short intro video (optional)", type: "upload", accept: "video/*" },
-    ],
-  },
-  {
-    id: "intent",
-    eyebrow: "Section 04",
-    title: "Intentionality.",
-    blurb: "We read every answer. This is the filter.",
-    fields: [
-      { key: "why", label: "Why are you joining this?", type: "textarea" },
-      { key: "different", label: "What are you hoping is different here?", type: "textarea" },
-      { key: "outside", label: "Open to meeting people outside your \"usual type\"?", type: "chips", options: ["Yes, that's the point", "Yes, with limits", "I have a type and I know it"] },
-      { key: "meaningful", label: "Are you genuinely looking for a meaningful relationship?", type: "chips", options: ["Yes, fully", "Yes, but unhurried", "Curious, not certain"] },
-    ],
-  },
 ] as const;
+
 
 /* ------------------------------ ui ------------------------------ */
 
@@ -270,22 +229,12 @@ function HowItWorks() {
 /* ------------------------------ form ------------------------------ */
 
 function Application() {
-  const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const submit = useServerFn(submitApplication);
 
-  const total = sections.length;
-  const current = sections[step];
-  const progress = useMemo(() => ((step + 1) / total) * 100, [step, total]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const el = document.getElementById("apply");
-      if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: "smooth" });
-    }
-  }, [step]);
+  const current = sections[0];
 
   const set = (k: string, v: FieldValue) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -294,7 +243,6 @@ function Application() {
     const email = String(form.email ?? "").trim();
     if (!name || !email) {
       toast.error("Name and email are required.");
-      setStep(0);
       return;
     }
     setSubmitting(true);
@@ -326,112 +274,41 @@ function Application() {
     }
   };
 
-  const next = () => {
-    if (step < total - 1) setStep(step + 1);
-    else void submitForm();
-  };
-  const back = () => step > 0 && setStep(step - 1);
+
 
 
   return (
-    <section id="apply" className="py-28 md:py-36 border-b hairline">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-12">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">The application</div>
-            <h2 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] max-w-[16ch]">
-              Tell us who you <em className="italic">actually</em> are.
-            </h2>
-          </div>
-          {!submitted && (
-            <div className="hidden md:block text-right text-[11px] tracking-[0.2em] text-stone font-mono uppercase">
-              {String(step + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </div>
-          )}
+    <section id="apply" className="py-28 md:py-36 border-b hairline scroll-mt-20">
+      <div className="max-w-[820px] mx-auto px-6 md:px-12">
+        <div className="mb-14">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">The application</div>
+          <h2 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] max-w-[16ch]">
+            Tell us who you <em className="italic">actually</em> are.
+          </h2>
+          <p className="text-ink-soft mt-6 max-w-[55ch] font-light text-base md:text-lg leading-[1.55]">
+            {current.blurb}
+          </p>
         </div>
-
-        {!submitted && (
-          <div className="h-px w-full bg-foreground/10 mb-16 overflow-hidden">
-            <div
-              className="h-full bg-ink transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
 
         {submitted ? (
           <Submitted name={(form.name as string) || ""} />
         ) : (
-          <div className="grid md:grid-cols-12 gap-12 md:gap-16">
-            <aside className="md:col-span-4">
-              <ol className="space-y-6 md:sticky md:top-28">
-                {sections.map((s, i) => {
-                  const state = i < step ? "done" : i === step ? "active" : "todo";
-                  return (
-                    <li key={s.id} className="flex items-start gap-4">
-                      <span
-                        className={`mt-1.5 inline-flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-mono ${
-                          state === "active"
-                            ? "bg-ink text-paper"
-                            : state === "done"
-                            ? "border border-ink text-ink"
-                            : "border hairline text-stone"
-                        }`}
-                      >
-                        {i + 1}
-                      </span>
-                      <div>
-                        <div
-                          className={`font-display text-xl leading-tight ${
-                            state === "todo" ? "text-stone" : "text-ink"
-                          }`}
-                        >
-                          {s.title}
-                        </div>
-                        <div className="text-[10px] uppercase tracking-[0.22em] text-stone mt-1">
-                          {s.eyebrow}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </aside>
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <div className="space-y-10">
+              {current.fields.map((f) => (
+                <Field key={f.key} field={f} value={form[f.key]} onChange={(v) => set(f.key, v)} />
+              ))}
+            </div>
 
-            <div className="md:col-span-8">
-              <div key={current.id} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-3">{current.eyebrow}</div>
-                <h3 className="font-display text-4xl md:text-5xl leading-[1.05] tracking-[-0.015em] mb-4">
-                  {current.title}
-                </h3>
-                <p className="text-ink-soft mb-12 max-w-[55ch] font-light text-base md:text-lg leading-[1.55]">
-                  {current.blurb}
-                </p>
-
-                <div className="space-y-10">
-                  {current.fields.map((f) => (
-                    <Field key={f.key} field={f} value={form[f.key]} onChange={(v) => set(f.key, v)} />
-                  ))}
-                </div>
-
-                <div className="mt-16 flex items-center justify-between">
-                  <button
-                    onClick={back}
-                    disabled={step === 0}
-                    className="text-[12px] uppercase tracking-[0.2em] text-stone hover:text-ink disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    ← Back
-                  </button>
-                  <button
-                    onClick={next}
-                    disabled={submitting}
-                    className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {step === total - 1 ? (submitting ? "Submitting…" : "Submit application") : "Continue"}
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </button>
-                </div>
-              </div>
+            <div className="mt-16 flex items-center justify-end">
+              <button
+                onClick={() => void submitForm()}
+                disabled={submitting}
+                className="group inline-flex items-center gap-4 bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {submitting ? "Submitting…" : "Submit application"}
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+              </button>
             </div>
           </div>
         )}
@@ -440,7 +317,18 @@ function Application() {
   );
 }
 
-type Field = (typeof sections)[number]["fields"][number];
+
+type Field = {
+  key: string;
+  label: string;
+  type: string;
+  required?: boolean;
+  placeholder?: string;
+  options?: readonly string[];
+  multi?: boolean;
+  accept?: string;
+};
+
 
 function Field({
   field,
@@ -480,7 +368,7 @@ function Field({
       <div>
         {label}
         <div className="flex flex-wrap gap-2 mt-1">
-          {field.options.map((o) => {
+          {(field.options ?? []).map((o) => {
             const active = arr.includes(o);
             return (
               <button
@@ -527,7 +415,7 @@ function UploadField({
   onChange,
   label,
 }: {
-  field: Extract<Field, { type: "upload" }>;
+  field: Field;
   upload: UploadValue | null;
   onChange: (v: FieldValue) => void;
   label: React.ReactNode;
