@@ -326,8 +326,13 @@ function Field({
   }
 
   if (field.type === "upload") {
-    const upload = value && typeof value === "object" && "path" in value ? (value as UploadValue) : null;
+    const upload = value && typeof value === "object" && !Array.isArray(value) && "path" in value ? (value as UploadValue) : null;
     return <UploadField field={field} upload={upload} onChange={onChange} label={label} />;
+  }
+
+  if (field.type === "uploads") {
+    const uploads = Array.isArray(value) && value.length && typeof value[0] === "object" ? (value as UploadValue[]) : [];
+    return <MultiUploadField field={field} uploads={uploads} onChange={onChange} label={label} />;
   }
 
   return (
