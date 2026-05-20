@@ -150,7 +150,7 @@ function Manifesto() {
 function HowItWorks() {
   const steps = [
     ["Apply", "Submit your application — not a profile. Read by a real person in 72 hours."],
-    ["Meet us", "If you're selected, we'll reach out to learn more about who you are and what you're looking for."],
+    ["We want to know you", "If you're selected, we'll schedule a short call to get to know more about you and what you're looking for in a partner."],
     ["Get invited", "Receive an invitation to a night out with friends with the opportunity to meet a match based on who's attending and what we've learned about you."],
   ];
   return (
@@ -158,7 +158,7 @@ function HowItWorks() {
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">How it works</div>
         <h2 className="font-display text-5xl md:text-6xl leading-[1.02] tracking-[-0.02em] max-w-[18ch]">
-          A real introduction in three steps
+          A real introduction in three steps.
         </h2>
         <div className="mt-20 grid md:grid-cols-3 gap-10 md:gap-16">
           {steps.map(([t, d], i) => (
