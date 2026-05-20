@@ -152,15 +152,16 @@ function HowItWorks() {
     ["Apply", "Submit your application — not a profile. Read by a real person in 72 hours."],
     ["We want to know you", "If you're selected, we'll schedule a short call to get to know more about you and what you're looking for in a partner."],
     ["Get invited", "Receive an invitation to a night out with friends with the opportunity to meet a match based on who's attending and what we've learned about you."],
+    ["Not this time?", "Every event is curated differently, and invitations depend on the overall guest mix and experience we're creating. If you're not selected for this event, we may reach out for future ones."],
   ];
   return (
     <section id="how" className="border-b hairline py-28 md:py-36">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">How it works</div>
         <h2 className="font-display text-5xl md:text-6xl leading-[1.02] tracking-[-0.02em] max-w-[18ch]">
-          A real introduction in three steps.
+          A real introduction in four steps.
         </h2>
-        <div className="mt-20 grid md:grid-cols-3 gap-10 md:gap-16">
+        <div className="mt-20 grid md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-16">
           {steps.map(([t, d], i) => (
             <div key={t} className="border-t hairline pt-8">
               <div className="font-mono text-[11px] text-stone tracking-[0.2em] mb-6">0{i + 1}</div>
