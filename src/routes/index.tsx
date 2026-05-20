@@ -52,11 +52,11 @@ const sections = [
       { key: "age", label: "Age", type: "number", required: true, placeholder: "29" },
       { key: "city", label: "City", type: "text", required: true, placeholder: "Brooklyn, NY" },
       { key: "sex", label: "Sex", type: "chips", required: true, options: ["Female", "Male", "Intersex", "Prefer not to say"] },
-      { key: "status", label: "Relationship status", type: "chips", options: ["Single", "Recently single", "Separated", "Divorced", "It's complicated"] },
-      { key: "kids", label: "Kids", type: "chips", options: ["No kids", "Want kids", "Have kids", "Undecided"] },
-      { key: "interest", label: "Interested in", type: "chips", multi: true, options: ["Men", "Women", "Non-binary", "Everyone"] },
+      { key: "status", label: "Relationship status", type: "chips", required: true, options: ["Single", "Recently single", "Separated", "Divorced", "It's complicated"] },
+      { key: "kids", label: "Kids", type: "chips", required: true, options: ["No kids", "Want kids", "Have kids", "Undecided"] },
+      { key: "interest", label: "Interested in", type: "chips", required: true, multi: true, options: ["Men", "Women", "Non-binary", "Everyone"] },
       { key: "looking_for", label: "Looking for", type: "chips", required: true, options: ["Serious relationship", "Marriage"] },
-      { key: "photos", label: "Photos (a few recent, unfiltered)", type: "uploads", accept: "image/*" },
+      { key: "photos", label: "Photos (a few recent, unfiltered)", type: "uploads", required: true, accept: "image/*" },
       { key: "email", label: "Email", type: "email", required: true, placeholder: "you@domain.com" },
       { key: "instagram", label: "Instagram (optional)", type: "text", placeholder: "@handle" },
       { key: "linkedin", label: "LinkedIn (optional)", type: "text", placeholder: "linkedin.com/in/…" },
@@ -189,6 +189,21 @@ function Application() {
   const submitForm = async () => {
     const name = String(form.name ?? "").trim();
     const email = String(form.email ?? "").trim();
+    const missing: string[] = [];
+    for (const field of current.fields) {
+      if (!("required" in field) || !field.required) continue;
+      const v = form[field.key];
+      const empty =
+        v === undefined ||
+        v === null ||
+        (typeof v === "string" && v.trim() === "") ||
+        (Array.isArray(v) && v.length === 0);
+      if (empty) missing.push(field.label);
+    }
+    if (missing.length) {
+      toast.error(`Please complete: ${missing.join(", ")}`);
+      return;
+    }
     if (!name || !email) {
       toast.error("Name and email are required.");
       return;
