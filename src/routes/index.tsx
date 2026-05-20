@@ -189,6 +189,21 @@ function Application() {
   const submitForm = async () => {
     const name = String(form.name ?? "").trim();
     const email = String(form.email ?? "").trim();
+    const missing: string[] = [];
+    for (const field of current.fields) {
+      if (!("required" in field) || !field.required) continue;
+      const v = form[field.key];
+      const empty =
+        v === undefined ||
+        v === null ||
+        (typeof v === "string" && v.trim() === "") ||
+        (Array.isArray(v) && v.length === 0);
+      if (empty) missing.push(field.label);
+    }
+    if (missing.length) {
+      toast.error(`Please complete: ${missing.join(", ")}`);
+      return;
+    }
     if (!name || !email) {
       toast.error("Name and email are required.");
       return;
