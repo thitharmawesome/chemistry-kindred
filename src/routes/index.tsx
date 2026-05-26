@@ -56,7 +56,8 @@ const sections = [
       { key: "kids", label: "Kids", type: "chips", required: true, options: ["No kids", "Want kids", "Have kids", "Undecided"] },
       { key: "interest", label: "Interested in", type: "chips", required: true, multi: true, options: ["Men", "Women", "Non-binary people", "Open to all"] },
       { key: "looking_for", label: "Looking for", type: "chips", required: true, options: ["Long-term relationship", "Marriage"] },
-      { key: "photos", label: "Photos (a few recent, unfiltered)", type: "uploads", required: true, accept: "image/*" },
+      { key: "photos", label: "Photos (up to 4 recent, unfiltered)", type: "uploads", required: true, accept: "image/*", maxFiles: 4, kind: "image" },
+      { key: "videos", label: "Short video clips (optional — up to 2, max 10 seconds each)", type: "uploads", accept: "video/*", maxFiles: 2, kind: "video", maxDurationSec: 10 },
       { key: "email", label: "Email", type: "email", required: true, placeholder: "you@domain.com" },
       { key: "instagram", label: "Instagram (optional)", type: "text", placeholder: "@handle" },
       { key: "linkedin", label: "LinkedIn (optional)", type: "text", placeholder: "linkedin.com/in/…" },
@@ -290,6 +291,9 @@ type Field = {
   options?: readonly string[];
   multi?: boolean;
   accept?: string;
+  maxFiles?: number;
+  kind?: "image" | "video";
+  maxDurationSec?: number;
 };
 
 
@@ -433,6 +437,23 @@ function UploadField({
   );
 }
 
+async function getVideoDuration(file: File): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const v = document.createElement("video");
+    v.preload = "metadata";
+    v.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      resolve(v.duration);
+    };
+    v.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Could not read video"));
+    };
+    v.src = url;
+  });
+}
+
 function MultiUploadField({
   field,
   uploads,
@@ -445,18 +466,58 @@ function MultiUploadField({
   label: React.ReactNode;
 }) {
   const [busy, setBusy] = useState(false);
+  const maxFiles = field.maxFiles ?? 10;
+  const isVideo = field.kind === "video";
+  const maxDur = field.maxDurationSec ?? 10;
+  const noun = isVideo ? "video" : "photo";
 
   const handleFiles = async (files: FileList) => {
+    const incoming = Array.from(files);
+    if (uploads.length + incoming.length > maxFiles) {
+      toast.error(`You can add up to ${maxFiles} ${noun}${maxFiles === 1 ? "" : "s"}.`);
+      return;
+    }
     setBusy(true);
     try {
       const next: UploadValue[] = [...uploads];
-      for (const file of Array.from(files)) {
+      for (const file of incoming) {
+        // Type guard
+        if (isVideo && !file.type.startsWith("video/")) {
+          toast.error(`${file.name} is not a video.`);
+          continue;
+        }
+        if (!isVideo && !file.type.startsWith("image/")) {
+          toast.error(`${file.name} is not an image.`);
+          continue;
+        }
+        // Size guard (100MB)
+        if (file.size > 100 * 1024 * 1024) {
+          toast.error(`${file.name} is over 100MB.`);
+          continue;
+        }
+        // Duration guard for videos
+        if (isVideo) {
+          try {
+            const dur = await getVideoDuration(file);
+            if (dur > maxDur + 0.5) {
+              toast.error(`${file.name} is ${Math.round(dur)}s — keep videos under ${maxDur}s.`);
+              continue;
+            }
+          } catch {
+            toast.error(`Could not read ${file.name}.`);
+            continue;
+          }
+        }
         const ext = file.name.split(".").pop() || "bin";
         const path = `${field.key}/${crypto.randomUUID()}.${ext}`;
         const { error } = await supabase.storage
           .from("waitlist-uploads")
           .upload(path, file, { contentType: file.type, upsert: false });
-        if (error) throw error;
+        if (error) {
+          console.error("upload error", error);
+          toast.error(`Upload failed for ${file.name}: ${error.message}`);
+          continue;
+        }
         next.push({ path, name: file.name, type: file.type, size: file.size });
       }
       onChange(next);
@@ -472,22 +533,29 @@ function MultiUploadField({
     onChange(uploads.filter((u) => u.path !== path));
   };
 
+  const atLimit = uploads.length >= maxFiles;
+
   return (
     <div>
       {label}
-      <label className="flex items-center gap-4 border hairline border-dashed rounded-md px-5 py-5 cursor-pointer hover:border-ink transition-colors">
+      <label
+        className="flex items-center gap-4 border hairline border-dashed rounded-md px-5 py-5 cursor-pointer hover:border-ink transition-colors data-[disabled=true]:opacity-50 data-[disabled=true]:cursor-not-allowed"
+        data-disabled={atLimit || busy}
+      >
         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone">
-          {busy ? "Uploading…" : "Add photos"}
+          {busy ? "Uploading…" : atLimit ? "Limit reached" : `Add ${noun}s`}
         </span>
         <span className="text-sm text-ink-soft truncate">
-          {uploads.length ? `${uploads.length} photo${uploads.length === 1 ? "" : "s"} added — click to add more` : "Drop photos or click to upload"}
+          {uploads.length
+            ? `${uploads.length} of ${maxFiles} ${noun}${uploads.length === 1 ? "" : "s"} added`
+            : `Drop ${noun}s or click to upload (max ${maxFiles}${isVideo ? `, ${maxDur}s each` : ""})`}
         </span>
         <input
           type="file"
           multiple
           accept={"accept" in field ? field.accept : undefined}
           className="hidden"
-          disabled={busy}
+          disabled={busy || atLimit}
           onChange={(e) => {
             if (e.target.files?.length) void handleFiles(e.target.files);
             e.target.value = "";
