@@ -2,10 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { sendApplicationEmail } from "./email.server";
-
-
-
 
 const submitSchema = z.object({
   name: z.string().trim().min(1).max(200),
@@ -35,18 +31,8 @@ export const submitApplication = createServerFn({ method: "POST" })
       console.error("submitApplication error", error);
       return { ok: false as const, error: "Could not save application." };
     }
-    await sendApplicationEmail({
-      name: data.name,
-      email: data.email,
-      age: data.age,
-      city: data.city,
-      instagram: data.instagram,
-      linkedin: data.linkedin,
-      payload: data.payload,
-    });
     return { ok: true as const };
   });
-
 
 export const listApplications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
