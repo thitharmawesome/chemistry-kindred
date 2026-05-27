@@ -4,4 +4,10 @@
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
+  "vars": {
+    "SUPABASE_URL": "https://bsafrekbtdommeefveej.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzYWZyZWtidGRvbW1lZWZ2ZWVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjYxOTUsImV4cCI6MjA5NTM0MjE5NX0.1Z9d51co48HVCRg0IKQ6khIcE31Bldjm6joIQ1TfcdQ",
+    "ADMIN_EMAIL": "reema@vennti.co",
+    "EMAIL_FROM_DOMAIN": "vennti.co"
+  }
 }
