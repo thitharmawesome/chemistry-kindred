@@ -35,8 +35,18 @@ export const submitApplication = createServerFn({ method: "POST" })
       console.error("submitApplication error", error);
       return { ok: false as const, error: "Could not save application." };
     }
+    await sendApplicationEmail({
+      name: data.name,
+      email: data.email,
+      age: data.age,
+      city: data.city,
+      instagram: data.instagram,
+      linkedin: data.linkedin,
+      payload: data.payload,
+    });
     return { ok: true as const };
   });
+
 
 export const listApplications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
