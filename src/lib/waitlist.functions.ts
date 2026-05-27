@@ -1,11 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createMimeMessage } from "mimetext";
-import { getCloudflareContext } from "@cloudflare/vite-plugin/cloudflare-context";
+// @ts-ignore - cloudflare:workers provides bindings at runtime
+import { env as cfEnv } from "cloudflare:workers";
 // @ts-ignore - cloudflare:email is provided by the Workers runtime
 import { EmailMessage } from "cloudflare:email";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
 
 async function sendApplicationEmail(data: {
   name: string;
