@@ -10,13 +10,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vennti — Designed for people tired of modern dating" },
+      { title: "A curated matchmaking experience designed to feel like a great night out." },
       {
         name: "description",
         content:
           "A curated matchmaking experience designed to feel like a great night out.",
       },
-      { property: "og:title", content: "Vennti — Designed for people tired of modern dating" },
+      { property: "og:title", content: "Vennti" },
       {
         property: "og:description",
         content: "A curated matchmaking experience designed to feel like a great night out.",
