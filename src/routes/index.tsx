@@ -591,7 +591,7 @@ function Submitted({ name }: { name: string }) {
     <div className="text-center py-20 animate-in fade-in slide-in-from-bottom-2 duration-700">
       <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">Application received</div>
       <h3 className="font-display text-5xl md:text-7xl leading-[1] tracking-[-0.02em] max-w-[18ch] mx-auto">
-        Thank you{name ? `, ${name.split(" ")[0]}` : ""}. <em className="italic">We read every word.</em>
+        Thank you{name ? `, ${name.split(" ")[0]}` : ""}. <em className="italic">We review every application.</em>
       </h3>
       <p className="text-ink-soft mt-8 max-w-[55ch] mx-auto text-lg leading-[1.55] font-light">
         You'll hear from a real person within ten days. If it feels right, we'll meet to learn more —
