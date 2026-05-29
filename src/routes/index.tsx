@@ -52,7 +52,7 @@ const sections = [
     fields: [
       { key: "name", label: "Full name", type: "text", required: true, placeholder: "Eleanor Vance" },
       { key: "age", label: "Age", type: "number", required: true, placeholder: "29" },
-      { key: "city", label: "City", type: "text", required: true, placeholder: "Brooklyn, NY" },
+      { key: "city", label: "City and State", type: "text", required: true, placeholder: "Brooklyn, NY" },
       { key: "sex", label: "Gender", type: "chips", required: true, options: ["Woman", "Man", "Non-binary"] },
       { key: "status", label: "Relationship status", type: "chips", required: true, options: ["Single", "Recently single", "Separated", "Divorced"] },
       { key: "kids", label: "Kids", type: "chips", required: true, options: ["No kids", "Want kids", "Have kids", "Undecided"] },
