@@ -14,15 +14,17 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Curated real-world experiences where intentional singles meet naturally through chemistry, conversation, and AI-guided compatibility.",
+          "A curated matchmaking experience designed to feel like a great night out.",
       },
       { property: "og:title", content: "Vennti — Designed for people tired of modern dating" },
       {
         property: "og:description",
-        content: "Apply for a curated real-world experience. Matched by people who actually read your application.",
+        content: "A curated matchmaking experience designed to feel like a great night out.",
       },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
