@@ -388,9 +388,26 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
         </div>
         <div className="p-8">
           <h2 className="font-display text-4xl tracking-tight mb-2">{app.name}</h2>
-          <div className="text-stone text-sm mb-8">
-            {app.email} · {app.city || "—"} · {app.age ?? "—"} · {app.pronouns || "—"}
-          </div>
+       <div className="text-stone text-sm mb-8">
+  {app.email} · {app.city || "—"} · {app.age ?? "—"} · {app.pronouns || "—"}
+</div>
+
+{(app.instagram) && (
+  <div className="grid grid-cols-2 gap-6 mb-8 text-sm">
+    {app.instagram && (
+      <div>
+        <div className="text-[10px] uppercase tracking-[0.22em] text-stone mb-1">Instagram</div>
+        <a
+          href=“https://instagram.com/vennti.co”
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-ink underline"
+        >
+          @vennti.co
+        </a>
+      </div>
+    )}
+
 
           <div className="border-t hairline pt-8 space-y-8">
             {Object.entries(app.payload || {}).map(([k, v]) => {
