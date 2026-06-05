@@ -375,7 +375,7 @@ function UploadLink({ upload }: { upload: UploadValue }) {
   );
 }
 
-function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void }) {
+unction DetailDrawer({ app, onClose }: { app: Application; onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex">
       <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" onClick={onClose} />
@@ -388,26 +388,25 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
         </div>
         <div className="p-8">
           <h2 className="font-display text-4xl tracking-tight mb-2">{app.name}</h2>
-       <div className="text-stone text-sm mb-8">
-  {app.email} · {app.city || "—"} · {app.age ?? "—"} · {app.pronouns || "—"}
-</div>
+          <div className="text-stone text-sm mb-8">
+            {app.email} · {app.city || "—"} · {app.age ?? "—"} · {app.pronouns || "—"}
+          </div>
 
-{(app.instagram) && (
-  <div className="grid grid-cols-2 gap-6 mb-8 text-sm">
-    {app.instagram && (
-      <div>
-        <div className="text-[10px] uppercase tracking-[0.22em] text-stone mb-1">Instagram</div>
-        <a
-      href={“https://instagram.com/vennti.co”}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-ink underline"
-        >
-          @vennti.co
-        </a>
-      </div>
-    )}
-
+          {app.instagram && (
+            <div className="mb-8 text-sm">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-stone mb-1">
+                Instagram
+              </div>
+              <a
+                href="https://instagram.com/vennti.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-ink underline"
+              >
+                @vennti.co
+              </a>
+            </div>
+          )}
 
           <div className="border-t hairline pt-8 space-y-8">
             {Object.entries(app.payload || {}).map(([k, v]) => {
@@ -449,62 +448,6 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
           </div>
         </div>
       </aside>
-    </div>
-  );
-}
-
-function MediaPreview({ upload }: { upload: UploadValue }) {
-  const sign = useServerFn(getUploadSignedUrl);
-  const [url, setUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    sign({ data: { path: upload.path } })
-      .then((r) => {
-        if (!cancelled) setUrl(r.url);
-      })
-      .catch((e: Error) => {
-        if (!cancelled) setError(e.message);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [upload.path, sign]);
-
-  if (error) return <div className="text-destructive text-sm">{error}</div>;
-  if (!url) return <div className="text-stone text-sm">Loading {upload.name}…</div>;
-
-  const kind = upload.type.startsWith("image/")
-    ? "image"
-    : upload.type.startsWith("video/")
-      ? "video"
-      : upload.type.startsWith("audio/")
-        ? "audio"
-        : "file";
-
-  return (
-    <div className="space-y-2">
-      {kind === "image" && (
-        <a href={url} target="_blank" rel="noreferrer">
-          <img src={url} alt={upload.name} className="max-w-full rounded-md border hairline" />
-        </a>
-      )}
-      {kind === "video" && (
-        <video src={url} controls className="max-w-full rounded-md border hairline" />
-      )}
-      {kind === "audio" && <audio src={url} controls className="w-full" />}
-      <div className="flex items-center gap-3 text-xs text-stone">
-        <a href={url} target="_blank" rel="noreferrer" className="underline hover:text-ink">
-          Open link
-        </a>
-        <span>·</span>
-        <a href={url} download={upload.name} className="underline hover:text-ink">
-          Download {upload.name}
-        </a>
-        <span>·</span>
-        <span>{(upload.size / 1024).toFixed(1)} KB</span>
-      </div>
     </div>
   );
 }
