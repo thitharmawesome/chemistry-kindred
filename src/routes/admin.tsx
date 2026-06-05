@@ -398,7 +398,7 @@ function DetailDrawer({ app, onClose }: { app: Application; onClose: () => void 
       <div>
         <div className="text-[10px] uppercase tracking-[0.22em] text-stone mb-1">Instagram</div>
         <a
-          href=“https://instagram.com/vennti.co”
+      href={“https://instagram.com/vennti.co”}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-ink underline"
