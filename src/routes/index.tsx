@@ -614,7 +614,7 @@ function Footer() {
         <div className="mt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[12px] uppercase tracking-[0.2em] text-stone font-mono">
           <a href="mailto:hello@vennti.co" className="hover:text-ink transition-colors">hello@vennti.co</a>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-ink transition-colors">Instagram</a>
+            <a href="https://instagram.com/vennti.co" target="_blank" rel="noreferrer" className="hover:text-ink transition-colors">Instagram</a>
             <a href="#" className="hover:text-ink transition-colors">Privacy</a>
             <a href="#" className="hover:text-ink transition-colors">Terms</a>
           </div>
