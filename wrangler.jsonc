@@ -3,8 +3,8 @@
   "name": "chemistry-kindred",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  
-    "send_email": [
+  "main": "@tanstack/react-start/server-entry",
+  "send_email": [
     {
       "name": "SEND_EMAIL",
       "destination_address": "reema@vennti.co"
