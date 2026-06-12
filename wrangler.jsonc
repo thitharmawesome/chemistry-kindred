@@ -3,8 +3,6 @@
   "name": "chemistry-kindred",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "dist/server/server.js",
-  "no_bundle": true,
   "send_email": [
     {
       "name": "SEND_EMAIL",
