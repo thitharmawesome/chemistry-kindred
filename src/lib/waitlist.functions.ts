@@ -80,7 +80,10 @@ export const getUploadSignedUrl = createServerFn({ method: "POST" })
     const { data: signed, error } = await supabaseAdmin.storage
       .from("waitlist-uploads")
       .createSignedUrl(data.path, 60 * 60);
-    if (error || !signed) throw new Error("Could not sign URL.");
+    if (error || !signed) {
+      console.error("getUploadSignedUrl error", data.path, error);
+      throw new Error(`File not available: ${data.path}`);
+    }
     return { url: signed.signedUrl };
   });
 
