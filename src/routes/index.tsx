@@ -55,7 +55,7 @@ const sections = [
       { key: "city", label: "City and State", type: "text", required: true, placeholder: "Brooklyn, NY" },
       { key: "sex", label: "Gender", type: "chips", required: true, options: ["Woman", "Man", "Non-binary"] },
       { key: "status", label: "Relationship status", type: "chips", required: true, options: ["Single", "Recently single", "Separated", "Divorced"] },
-      { key: "kids", label: "Kids", type: "chips", required: true, options: ["No kids", "Want kids", "Have kids", "Undecided"] },
+      { key: "kids", label: "Kids", type: "chips", required: true, multi: true, options: ["No kids", "Want kids", "Have kids", "Undecided"] },
       { key: "interest", label: "Interested in", type: "chips", required: true, multi: true, options: ["Men", "Women", "Non-binary people", "Open to all"] },
       { key: "looking_for", label: "Looking for", type: "chips", required: true, options: ["Long-term relationship", "Marriage"] },
       { key: "photos", label: "Photos (up to 4 recent, unfiltered)", type: "uploads", required: true, accept: "image/*", maxFiles: 4, kind: "image" },
