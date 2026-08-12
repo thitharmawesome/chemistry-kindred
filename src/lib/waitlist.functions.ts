@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabaseAdmin } from "@/lib/supabase-admin.server";
 import { requireAdminAuth as requireSupabaseAuth } from "@/lib/supabase-auth.server";
 
 const submitSchema = z.object({
