@@ -353,10 +353,14 @@ function UploadLink({ upload }: { upload: UploadValue }) {
 
   const open = async () => {
     setLoading(true);
+    // Open the tab synchronously so browsers don't block it as a popup.
+    const tab = window.open("", "_blank", "noopener,noreferrer");
     try {
       const { url } = await sign({ data: { path: upload.path } });
-      window.open(url, "_blank", "noopener,noreferrer");
+      if (tab) tab.location.href = url;
+      else window.location.href = url;
     } catch (e) {
+      tab?.close();
       toast.error((e as Error).message);
     } finally {
       setLoading(false);
