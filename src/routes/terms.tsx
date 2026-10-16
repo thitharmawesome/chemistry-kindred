@@ -62,6 +62,21 @@ function TermsPage() {
             </p>
           </section>
           <section>
+            <h2 className="font-display text-2xl text-ink mb-3">Prohibited activities</h2>
+            <p>
+              Vennti strictly prohibits any use of the service, events, or introductions in
+              connection with human trafficking, including sexual exploitation, commercial sexual
+              activity, or any form of forced or coerced labor or services. You may not solicit,
+              facilitate, aid, abet, or encourage abuse, harassment, violence, exploitation, or
+              any other harm toward any person, whether online or in person.
+            </p>
+            <p className="mt-4">
+              Any violation will result in immediate removal from Vennti and its events, and we
+              will report suspected trafficking, exploitation, or abuse to the appropriate law
+              enforcement authorities.
+            </p>
+          </section>
+          <section>
             <h2 className="font-display text-2xl text-ink mb-3">Disclaimers</h2>
             <p>
               Vennti is provided "as is" without warranties of any kind. We are not responsible

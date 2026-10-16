@@ -1,6 +1,7 @@
 // Pinned to the project defined in src/lib/supabase-config.ts.
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
+import { brokeredPreviewStorage } from "./previewAuthStorage";
 import {
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY,
@@ -19,7 +20,7 @@ function createSupabaseClient() {
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     auth: {
-      storage: typeof window !== "undefined" ? localStorage : undefined,
+      storage: brokeredPreviewStorage(),
       persistSession: true,
       autoRefreshToken: true,
     },
