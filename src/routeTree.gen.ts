@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LawEnforcementRouteImport } from './routes/law-enforcement'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
@@ -42,6 +43,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/law-enforcement'
     | '/login'
     | '/privacy'
+    | '/refund-policy'
     | '/terms'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/law-enforcement'
     | '/login'
     | '/privacy'
+    | '/refund-policy'
     | '/terms'
     | '/lovable/email/queue/process'
   id:
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/law-enforcement'
     | '/login'
     | '/privacy'
+    | '/refund-policy'
     | '/terms'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   LawEnforcementRoute: typeof LawEnforcementRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
   TermsRoute: typeof TermsRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -159,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   LawEnforcementRoute: LawEnforcementRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
   TermsRoute: TermsRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
