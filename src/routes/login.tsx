@@ -5,7 +5,15 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
-    meta: [{ title: "Admin — Vennti" }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: "Admin Sign In — Vennti" },
+      { name: "robots", content: "noindex" },
+      { name: "description", content: "Sign in to the Vennti admin portal." },
+      { property: "og:title", content: "Admin Sign In — Vennti" },
+      { property: "og:description", content: "Sign in to the Vennti admin portal." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
     links: [
       {
         rel: "stylesheet",

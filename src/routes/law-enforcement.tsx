@@ -11,6 +11,7 @@ export const Route = createFileRoute("/law-enforcement")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary" },
       { property: "og:url", content: "https://chemistry-kindred.lovable.app/law-enforcement" },
     ],
     links: [{ rel: "canonical", href: "https://chemistry-kindred.lovable.app/law-enforcement" }],

@@ -5,6 +5,10 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — Vennti" },
       { name: "description", content: "How Vennti collects, uses, and protects your information." },
+      { property: "og:title", content: "Privacy Policy — Vennti" },
+      { property: "og:description", content: "How Vennti collects, uses, and protects your information." },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: PrivacyPage,
