@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { submitApplication } from "@/lib/waitlist.functions";
@@ -17,6 +17,8 @@ export const Route = createFileRoute("/")({
           "A curated matchmaking experience designed to feel like a great night out.",
       },
       { property: "og:title", content: "Vennti" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       {
         property: "og:description",
         content: "A curated matchmaking experience designed to feel like a great night out.",
@@ -169,6 +171,11 @@ function HowItWorks() {
               <div className="font-mono text-[11px] text-stone tracking-[0.2em] mb-6">0{i + 1}</div>
               <h3 className="font-display text-3xl md:text-4xl tracking-tight">{t}</h3>
               <p className="mt-4 text-ink-soft text-base md:text-[17px] leading-[1.55] font-light whitespace-pre-line">{d}</p>
+              {i === 2 && (
+                <p className="mt-4 text-ink-soft text-base md:text-[17px] leading-[1.55] font-light">
+                  Tickets are non-refundable within 48 hours of the event. <Link to="/refund-policy" className="text-ink underline underline-offset-4 hover:opacity-80 transition-opacity">See our full refund policy.</Link>
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -613,10 +620,11 @@ function Footer() {
         </div>
         <div className="mt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[12px] uppercase tracking-[0.2em] text-stone font-mono">
           <a href="mailto:hello@vennti.co" className="hover:text-ink transition-colors">hello@vennti.co</a>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-x-8 gap-y-4">
             <a href="https://instagram.com/vennti.co" target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">Instagram</a>
             <a href="/privacy" className="hover:text-ink transition-colors">Privacy</a>
             <a href="/terms" className="hover:text-ink transition-colors">Terms</a>
+            <Link to="/refund-policy" className="hover:text-ink transition-colors">Refund Policy</Link>
             <a href="/law-enforcement" className="hover:text-ink transition-colors">Law Enforcement</a>
           </div>
           <span>© 2026</span>

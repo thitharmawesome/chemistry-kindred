@@ -9,7 +9,15 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [{ title: "Applications — Vennti" }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: "Applications — Vennti" },
+      { name: "robots", content: "noindex" },
+      { name: "description", content: "Review Vennti event applications." },
+      { property: "og:title", content: "Applications — Vennti" },
+      { property: "og:description", content: "Review Vennti event applications." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
     links: [
       {
         rel: "stylesheet",

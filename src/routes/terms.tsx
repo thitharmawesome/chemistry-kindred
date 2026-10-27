@@ -5,6 +5,10 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms of Service — Vennti" },
       { name: "description", content: "The terms that govern your use of Vennti." },
+      { property: "og:title", content: "Terms of Service — Vennti" },
+      { property: "og:description", content: "The terms that govern your use of Vennti." },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: TermsPage,
