@@ -617,6 +617,7 @@ function Footer() {
             <a href="https://instagram.com/vennti.co" target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">Instagram</a>
             <a href="/privacy" className="hover:text-ink transition-colors">Privacy</a>
             <a href="/terms" className="hover:text-ink transition-colors">Terms</a>
+            <a href="/law-enforcement" className="hover:text-ink transition-colors">Law Enforcement</a>
           </div>
           <span>© 2026</span>
         </div>
