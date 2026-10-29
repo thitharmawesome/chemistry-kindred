@@ -7,7 +7,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { listMemberEvents } from "@/lib/events.functions";
 import { formatEventDate, formatEventTime } from "@/lib/event-format";
-import { EventDateList } from "./events";
+import { EventDateList } from "@/components/EventDateList";
 
 export const CALENDLY_URL = "https://calendly.com/reemath/30min";
 export const PREFERENCES_URL =
