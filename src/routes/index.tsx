@@ -117,12 +117,13 @@ function Nav() {
             </Link>
           </>
         )}
-        <
+        <a
           href="#apply"
           className="text-[12px] uppercase tracking-[0.18em] px-4 py-2.5 bg-ink text-paper rounded-full hover:opacity-90 transition-opacity"
         >
           Apply for the next event
         </a>
+        </div>
       </div>
     </header>
   );
