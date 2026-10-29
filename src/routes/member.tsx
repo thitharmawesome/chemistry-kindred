@@ -71,17 +71,9 @@ function MemberPage() {
           <section>
             <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">Your events</div>
             <h1 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] mb-8">
-              Scheduled <em className="italic">events.</em>
+              Upcoming <em className="italic">events.</em>
             </h1>
-            <div className="border hairline rounded-2xl p-10">
-              <p className="text-ink-soft font-light text-lg leading-[1.55] max-w-[55ch]">
-                No events are scheduled for you yet. When you're invited, event details and ticket
-                information will show up here and in your email.
-              </p>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 text-[12px] uppercase tracking-[0.2em] text-stone hover:text-ink transition-colors">
-                Want to talk? Book a call →
-              </a>
-            </div>
+            <MemberEvents />
           </section>
         ) : (
           <section>

@@ -212,7 +212,8 @@ function AdminPage() {
             Vennti
           </Link>
           <div className="flex items-center gap-6 text-[12px] uppercase tracking-[0.18em] text-stone">
-            <span className="hidden md:inline">Applications</span>
+            <span className="hidden md:inline text-ink">Applications</span>
+            <Link to="/admin/events" className="hover:text-ink transition-colors">Events</Link>
             <button onClick={onSignOut} className="hover:text-ink transition-colors">
               Sign out
             </button>

@@ -13,7 +13,7 @@ import {
 } from "@/lib/events.functions";
 import { formatEventDate, formatEventTime } from "@/lib/event-format";
 
-export const Route = createFileRoute("/admin/events")({
+export const Route = createFileRoute("/admin_/events")({
   ssr: false,
   head: () => ({
     meta: [
