@@ -86,6 +86,12 @@ function Landing() {
 }
 
 function Nav() {
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setSignedIn(Boolean(session)));
+    return () => sub.subscription.unsubscribe();
+  }, []);
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-background/80 backdrop-blur-md border-b hairline">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
@@ -96,7 +102,22 @@ function Nav() {
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
           <a href="#apply" className="hover:text-foreground transition-colors">Apply</a>
         </nav>
-        <a
+        <div className="flex items-center gap-5">
+        {signedIn ? (
+          <Link to="/member" className="text-[12px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors">
+            My account
+          </Link>
+        ) : (
+          <>
+            <Link to="/account" search={{ mode: "signin" }} className="text-[12px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors">
+              Log in
+            </Link>
+            <Link to="/account" search={{ mode: "signup" }} className="hidden sm:inline text-[12px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors">
+              Create account
+            </Link>
+          </>
+        )}
+        <
           href="#apply"
           className="text-[12px] uppercase tracking-[0.18em] px-4 py-2.5 bg-ink text-paper rounded-full hover:opacity-90 transition-opacity"
         >
@@ -189,6 +210,7 @@ function HowItWorks() {
 function Application() {
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
+  const [hasAccount, setHasAccount] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const submit = useServerFn(submitApplication);
 
@@ -235,6 +257,7 @@ function Application() {
         },
       });
       if (result?.ok) {
+        setHasAccount(Boolean(result.hasAccount));
         setSubmitted(true);
       } else {
         toast.error(result?.error || "Something went wrong. Please try again.");
@@ -264,7 +287,11 @@ function Application() {
         </div>
 
         {submitted ? (
-          <Submitted name={(form.name as string) || ""} />
+          <Submitted
+            name={(form.name as string) || ""}
+            email={String(form.email ?? "").trim()}
+            hasAccount={hasAccount}
+          />
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="space-y-10">
@@ -593,7 +620,7 @@ function MultiUploadField({
 
 
 
-function Submitted({ name }: { name: string }) {
+function Submitted({ name, email, hasAccount }: { name: string; email: string; hasAccount: boolean }) {
   return (
     <div className="text-center py-20 animate-in fade-in slide-in-from-bottom-2 duration-700">
       <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-6">Application received</div>
@@ -604,6 +631,20 @@ function Submitted({ name }: { name: string }) {
         You'll hear from a real person within ten days. If it feels right, we'll meet to learn more —
         then invite you to a curated experience with people chosen for you.
       </p>
+      <div className="mt-12 border hairline rounded-2xl p-8 max-w-[560px] mx-auto">
+        <p className="text-ink-soft font-light leading-[1.55] mb-6">
+          {hasAccount
+            ? "Looks like you already have an account. Sign in to check out the new events."
+            : "Create an account to book a call with us, share your partner preferences and see your events."}
+        </p>
+        <Link
+          to="/account"
+          search={{ mode: hasAccount ? "signin" : "signup", email }}
+          className="inline-block bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
+        >
+          {hasAccount ? "Sign in →" : "Create an account →"}
+        </Link>
+      </div>
       <div className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-stone">
         — Vennti
       </div>
