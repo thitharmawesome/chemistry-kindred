@@ -12,12 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as LawEnforcementRouteImport } from './routes/law-enforcement'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MemberRouteImport } from './routes/member'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminEventsRouteImport } from './routes/admin_.events'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
 const IndexRoute = IndexRouteImport.update({
@@ -33,6 +35,11 @@ const AccountRoute = AccountRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LawEnforcementRoute = LawEnforcementRouteImport.update({
@@ -65,6 +72,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminEventsRoute = AdminEventsRouteImport.update({
+  id: '/admin_/events',
+  path: '/admin/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -76,24 +88,28 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/admin': typeof AdminRoute
+  '/events': typeof EventsRoute
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/member': typeof MemberRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/events': typeof AdminEventsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/admin': typeof AdminRoute
+  '/events': typeof EventsRoute
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/member': typeof MemberRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/events': typeof AdminEventsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesById {
@@ -101,12 +117,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/admin': typeof AdminRoute
+  '/events': typeof EventsRoute
   '/law-enforcement': typeof LawEnforcementRoute
   '/login': typeof LoginRoute
   '/member': typeof MemberRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin_/events': typeof AdminEventsRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
@@ -115,36 +133,42 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/admin'
+    | '/events'
     | '/law-enforcement'
     | '/login'
     | '/member'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
+    | '/admin/events'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/account'
     | '/admin'
+    | '/events'
     | '/law-enforcement'
     | '/login'
     | '/member'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
+    | '/admin/events'
     | '/lovable/email/queue/process'
   id:
     | '__root__'
     | '/'
     | '/account'
     | '/admin'
+    | '/events'
     | '/law-enforcement'
     | '/login'
     | '/member'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
+    | '/admin_/events'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
 }
@@ -152,12 +176,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
   AdminRoute: typeof AdminRoute
+  EventsRoute: typeof EventsRoute
   LawEnforcementRoute: typeof LawEnforcementRoute
   LoginRoute: typeof LoginRoute
   MemberRoute: typeof MemberRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
   TermsRoute: typeof TermsRoute
+  AdminEventsRoute: typeof AdminEventsRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
 
@@ -182,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/law-enforcement': {
@@ -226,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin_/events': {
+      id: '/admin_/events'
+      path: '/admin/events'
+      fullPath: '/admin/events'
+      preLoaderRoute: typeof AdminEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -240,12 +280,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
   AdminRoute: AdminRoute,
+  EventsRoute: EventsRoute,
   LawEnforcementRoute: LawEnforcementRoute,
   LoginRoute: LoginRoute,
   MemberRoute: MemberRoute,
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
   TermsRoute: TermsRoute,
+  AdminEventsRoute: AdminEventsRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport

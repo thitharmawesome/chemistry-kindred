@@ -100,6 +100,7 @@ function Nav() {
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground tracking-wide">
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
+          <Link to="/events" className="hover:text-foreground transition-colors">Events</Link>
           <a href="#apply" className="hover:text-foreground transition-colors">Apply</a>
         </nav>
         <div className="flex items-center gap-5">

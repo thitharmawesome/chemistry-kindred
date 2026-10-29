@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { listMemberEvents } from "@/lib/events.functions";
+import { formatEventDate, formatEventTime } from "@/lib/event-format";
+import { EventDateList } from "@/components/EventDateList";
 
 export const CALENDLY_URL = "https://calendly.com/reemath/30min";
 export const PREFERENCES_URL =
@@ -71,17 +76,9 @@ function MemberPage() {
           <section>
             <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-5">Your events</div>
             <h1 className="font-display text-5xl md:text-6xl leading-[1] tracking-[-0.02em] mb-8">
-              Scheduled <em className="italic">events.</em>
+              Upcoming <em className="italic">events.</em>
             </h1>
-            <div className="border hairline rounded-2xl p-10">
-              <p className="text-ink-soft font-light text-lg leading-[1.55] max-w-[55ch]">
-                No events are scheduled for you yet. When you're invited, event details and ticket
-                information will show up here and in your email.
-              </p>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 text-[12px] uppercase tracking-[0.2em] text-stone hover:text-ink transition-colors">
-                Want to talk? Book a call →
-              </a>
-            </div>
+            <MemberEvents />
           </section>
         ) : (
           <section>
@@ -123,5 +120,50 @@ function MemberPage() {
         )}
       </div>
     </main>
+  );
+}
+
+function MemberEvents() {
+  const fetchEvents = useServerFn(listMemberEvents);
+  const q = useQuery({ queryKey: ["member-events"], queryFn: () => fetchEvents(), retry: false });
+  if (q.isLoading) return <div className="text-stone">Loading…</div>;
+  if (q.error || !q.data) return <div className="text-stone">Events couldn't load right now.</div>;
+  const { screened, events } = q.data;
+  if (!screened) {
+    return (
+      <div className="space-y-10">
+        <p className="text-ink-soft font-light text-lg leading-[1.55] max-w-[55ch]">
+          Venue details and tickets unlock once we've had our call or received your partner preferences.
+        </p>
+        <EventDateList events={events} />
+        <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-[12px] uppercase tracking-[0.2em] text-stone hover:text-ink transition-colors">
+          Book a call →
+        </a>
+      </div>
+    );
+  }
+  if (events.length === 0) return <EventDateList events={[]} />;
+  return (
+    <ul className="space-y-6">
+      {events.map((e) => (
+        <li key={e.id} className="border hairline rounded-2xl p-8 md:p-10">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-stone mb-3">
+            {formatEventDate(e.starts_at)} · {formatEventTime(e.starts_at)}
+          </div>
+          <h2 className="font-display text-3xl md:text-4xl mb-2">{e.title}</h2>
+          {e.venue_name && <div className="text-lg">{e.venue_name}</div>}
+          {e.venue_address && <div className="text-stone">{e.venue_address}</div>}
+          {e.details && <p className="text-ink-soft font-light leading-[1.55] mt-5 max-w-[60ch] whitespace-pre-line">{e.details}</p>}
+          <div className="flex flex-wrap items-center gap-6 mt-8">
+            {e.ticket_url && (
+              <a href={e.ticket_url} target="_blank" rel="noopener noreferrer" className="bg-ink text-paper px-7 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-ink-soft transition-colors">
+                Get tickets →
+              </a>
+            )}
+            {e.price && <span className="text-stone">{e.price}</span>}
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }
