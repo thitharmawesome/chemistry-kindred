@@ -31,7 +31,25 @@ export const submitApplication = createServerFn({ method: "POST" })
       console.error("submitApplication error", error);
       return { ok: false as const, error: "Could not save application." };
     }
-    return { ok: true as const };
+    let hasAccount = false;
+    try {
+      const target = data.email.toLowerCase();
+      for (let page = 1; page <= 10; page++) {
+        const { data: list, error: listErr } = await supabaseAdmin.auth.admin.listUsers({
+          page,
+          perPage: 1000,
+        });
+        if (listErr || !list) break;
+        if (list.users.some((u) => (u.email ?? "").toLowerCase() === target)) {
+          hasAccount = true;
+          break;
+        }
+        if (list.users.length < 1000) break;
+      }
+    } catch (e) {
+      console.error("account lookup failed", e);
+    }
+    return { ok: true as const, hasAccount };
   });
 
 export const listApplications = createServerFn({ method: "GET" })
